@@ -17,6 +17,14 @@ func (c *MainController) URLMapping() {
 	c.Mapping("Logout", c.Logout)
 
 }
+func (c *MainController)SessionTest() {
+	c.Data["id"] = c.GetSession("id")
+	if c.Data["id"] == nil {
+		c.Redirect("/login", 302)
+	}
+	fmt.Println("id:",c.Data["id"])
+	fmt.Println("ceshi")
+}
 func(c *MainController) GetSessionNum() int {
 	return beego.GlobalSessions.GetActiveSession()
 }
@@ -26,7 +34,7 @@ func (c *MainController) Index() {
 	if c.Data["id"]==nil{
 		c.Redirect("/login",302)
 	}
-	i:=c.GetSessionNum
+	i:=c.GetSessionNum()
 	fmt.Println("当前活跃的session数：",i)
 }
 func (c *MainController) Login() {

@@ -2,18 +2,22 @@ package controllers
 
 import "C"
 import (
+	"crypto/md5"
 	"employmentInfo/models"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
+	"os"
+	"path"
 	"strings"
-
-	"github.com/astaxie/beego"
+	"time"
 )
 
 //  StudentController operations for Student
 type StudentController struct {
-	beego.Controller
+	//beego.Controller
+	MainController
 
 }
 
@@ -30,9 +34,53 @@ func (c *StudentController) URLMapping() {
 	c.Mapping("DeleteStudent",c.DeleteStudent)
 	c.Mapping("AddStudent",c.AddStudent)
 	c.Mapping("StudentAdding",c.StudentAdding)
+	c.Mapping("FileUpload",c.FileUpload)
 
 }
+
+func (c *StudentController) FileUpload(){
+
+	f, h, _ := c.GetFile("myfile")//获取上传的文件
+	ext := path.Ext(h.Filename)
+	//验证后缀名是否符合要求
+	var AllowExtMap map[string]bool = map[string]bool{
+		".jpg":true,
+		".jpeg":true,
+		".png":true,
+	}
+	if _,ok:=AllowExtMap[ext];!ok{
+		c.Ctx.WriteString( "后缀名不符合上传要求" )
+		return
+	}
+	//创建目录
+	uploadDir := "static/upload/" + time.Now().Format("2006/01/02/")
+	err := os.MkdirAll( uploadDir , 777)
+	if err != nil {
+		c.Ctx.WriteString( fmt.Sprintf("%v",err) )
+		return
+	}
+	//构造文件名称
+	rand.Seed(time.Now().UnixNano())
+	randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000 )
+	hashName := md5.Sum( []byte( time.Now().Format("2006_01_02_15_04_05_") + randNum ) )
+
+	fileName := fmt.Sprintf("%x",hashName) + ext
+	//c.Ctx.WriteString(  fileName )
+
+	fpath := uploadDir + fileName
+	defer f.Close()//关闭上传的文件，不然的话会出现临时文件不能清除的情况
+	err = c.SaveToFile("myfile", fpath)
+	if err != nil {
+		c.Ctx.WriteString( fmt.Sprintf("%v",err) )
+	}
+	//c.Ctx.WriteString( "上传成功~！！！！！！！" )
+	fmt.Println("上传成功")
+	c.Redirect("/getAllStudents",302)
+	c.TplName="students.html"
+}
+
 func (c *StudentController) StudentAdding(){
+	c.Data["id"]=c.GetSession("id")
 	var s models.Student
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
@@ -50,6 +98,7 @@ func (c *StudentController) StudentAdding(){
 	c.Redirect("/getAllStudents",302)
 }
 func (c *StudentController) AddStudent(){
+	c.Data["id"]=c.GetSession("id")
 	c.TplName="student_add.html"
 }
 func (c *StudentController) DeleteStudent(){
@@ -151,10 +200,8 @@ func (c *StudentController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *StudentController) GetAllStudents() {
-	c.Data["id"]=c.GetSession("id")
-	//if c.Data["id"]==nil{
-	//	c.Redirect("/login",302)
-	//}
+	c.SessionTest()
+	//fmt.Println("id:",c.Data["id"])
 	//c.SessionTest()
 	var fields []string
 	var sortby []string

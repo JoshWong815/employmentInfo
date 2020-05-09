@@ -54,7 +54,7 @@ func (c *OfferController) AddOffer(){
 }
 func (c *OfferController) DeleteOffer(){
 	id:=c.GetString("id")
-	intid,_:=strconv.ParseInt(id,0,64)
+	intid,_:=strconv.Atoi(id)
 	if err := models.DeleteOffer(intid); err == nil {
 
 		c.Redirect("/getAllOffers",302)
@@ -69,7 +69,7 @@ func (c *OfferController) OfferUpdating() {
 	fmt.Println("Id的值：",Id)
 	intid, _ := strconv.Atoi(Id)
 	//u := models.Offer{Id: int64(intid)}
-	u := models.Offer{Id: int64(intid)}
+	u := models.Offer{Id: intid}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
 		c.Redirect("/updateOffer?id="+Id , 302)
@@ -90,7 +90,7 @@ func (c *OfferController) UpdateOffer(){
 	//id := c.Ctx.Input.Param(":id")
 	fmt.Println("id:",id)
 	intid, _ := strconv.Atoi(id)
-	Offer,err:=models.GetOfferById(int64(intid))
+	Offer,err:=models.GetOfferById(intid)
 	//Offer,err:=models.GetOfferById(id)
 	if err!=nil{
 		fmt.Println(err)
@@ -127,7 +127,7 @@ func (c *OfferController) Post() {
 // @router /:id [get]
 func (c *OfferController) GetOne() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	v, err := models.GetOfferById(id)
 	if err != nil {
 		c.Data["json"] = err.Error()
@@ -214,7 +214,7 @@ func (c *OfferController) GetAllOffers() {
 // @router /:id [put]
 func (c *OfferController) Put() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	v := models.Offer{Id: id}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
 	if err := models.UpdateOfferById(&v); err == nil {
@@ -234,7 +234,7 @@ func (c *OfferController) Put() {
 // @router /:id [delete]
 func (c *OfferController) Delete() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	if err := models.DeleteOffer(id); err == nil {
 		c.Data["json"] = "OK"
 	} else {

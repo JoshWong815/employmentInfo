@@ -54,7 +54,7 @@ func (c *CompanyController) AddCompany(){
 }
 func (c *CompanyController) DeleteCompany(){
 	id:=c.GetString("id")
-	intid,_:=strconv.ParseInt(id,0,64)
+	intid,_:=strconv.Atoi(id)
 	if err := models.DeleteCompany(intid); err == nil {
 
 		c.Redirect("/getAllCompanys",302)
@@ -69,7 +69,7 @@ func (c *CompanyController) CompanyUpdating() {
 	fmt.Println("Id的值：",Id)
 	intid, _ := strconv.Atoi(Id)
 	//u := models.Company{Id: int64(intid)}
-	u := models.Company{Id: int64(intid)}
+	u := models.Company{Id: intid}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
 		c.Redirect("/updateCompany?id="+Id , 302)
@@ -90,7 +90,7 @@ func (c *CompanyController) UpdateCompany(){
 	//id := c.Ctx.Input.Param(":id")
 	fmt.Println("id:",id)
 	intid, _ := strconv.Atoi(id)
-	Company,err:=models.GetCompanyById(int64(intid))
+	Company,err:=models.GetCompanyById(intid)
 	//Company,err:=models.GetCompanyById(id)
 	if err!=nil{
 		fmt.Println(err)
@@ -127,7 +127,7 @@ func (c *CompanyController) Post() {
 // @router /:id [get]
 func (c *CompanyController) GetOne() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	v, err := models.GetCompanyById(id)
 	if err != nil {
 		c.Data["json"] = err.Error()
@@ -214,7 +214,7 @@ func (c *CompanyController) GetAllCompanys() {
 // @router /:id [put]
 func (c *CompanyController) Put() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	v := models.Company{Id: id}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
 	if err := models.UpdateCompanyById(&v); err == nil {
@@ -234,7 +234,7 @@ func (c *CompanyController) Put() {
 // @router /:id [delete]
 func (c *CompanyController) Delete() {
 	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
+	id, _ := strconv.Atoi(idStr)
 	if err := models.DeleteCompany(id); err == nil {
 		c.Data["json"] = "OK"
 	} else {

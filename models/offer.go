@@ -10,7 +10,7 @@ import (
 )
 
 type Offer struct {
-	Id   int64
+	Id   int
 	Name string `orm:"size(128)"`
 	Cid  int
 	Note string `orm:"size(128)"`
@@ -30,7 +30,7 @@ func AddOffer(m *Offer) (id int64, err error) {
 
 // GetOfferById retrieves Offer by Id. Returns error if
 // Id doesn't exist
-func GetOfferById(id int64) (v *Offer, err error) {
+func GetOfferById(id int) (v *Offer, err error) {
 	o := orm.NewOrm()
 	v = &Offer{Id: id}
 	if err = o.QueryTable(new(Offer)).Filter("Id", id).RelatedSel().One(v); err == nil {
@@ -130,7 +130,7 @@ func UpdateOfferById(m *Offer) (err error) {
 
 // DeleteOffer deletes Offer by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteOffer(id int64) (err error) {
+func DeleteOffer(id int) (err error) {
 	o := orm.NewOrm()
 	v := Offer{Id: id}
 	// ascertain id exists in the database

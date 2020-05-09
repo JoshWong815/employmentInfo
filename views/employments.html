@@ -204,7 +204,7 @@
                                 <th class="text-center">是否签约</th>
                                 <th class="text-center">签约公司</th>
                                 <th class="text-center">签约岗位</th>
-
+                                <th class="text-center">解约原因</th>
                                 <th colspan="2" style="text-align:center;">操作</th>
                             </tr>
                             </thead>
@@ -219,14 +219,14 @@
                                     <td class="text-center" >{{.Employed}}</td>
                                     <td class="text-center">{{.Cname}}</td>
                                     <td class="text-center" >{{.Oname}}</td>
+                                    <td class="text-center" >{{.Reason}}</td>
 
-
-                                    <td class="text-center" ><a href="/updateOffer?id={{.Id}}" class="btn btn-info" >修改</a></td>
+                                    <td class="text-center" ><a href="/updateEmployment?id={{.Id}}" class="btn btn-info" >修改</a></td>
                                     <td class="text-center" ><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>
                                 </tr>
                             {{end}}
 
-                            <tr style="text-align:center;"><a href="/addOffer" class="btn btn-primary" >添加</a></tr>
+                            <tr style="text-align:center;"><a href="/addEmployment" class="btn btn-primary" >添加</a></tr>
                             </tbody>
                         </table>
                     </div>

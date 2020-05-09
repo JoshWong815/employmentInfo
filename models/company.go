@@ -10,7 +10,7 @@ import (
 )
 
 type Company struct {
-	Id   int64
+	Id   int
 	Name string `orm:"size(128)"`
 	Note string `orm:"size(128)"`
 }
@@ -29,7 +29,7 @@ func AddCompany(m *Company) (id int64, err error) {
 
 // GetCompanyById retrieves Company by Id. Returns error if
 // Id doesn't exist
-func GetCompanyById(id int64) (v *Company, err error) {
+func GetCompanyById(id int) (v *Company, err error) {
 	o := orm.NewOrm()
 	v = &Company{Id: id}
 	if err = o.QueryTable(new(Company)).Filter("Id", id).RelatedSel().One(v); err == nil {
@@ -129,7 +129,7 @@ func UpdateCompanyById(m *Company) (err error) {
 
 // DeleteCompany deletes Company by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteCompany(id int64) (err error) {
+func DeleteCompany(id int) (err error) {
 	o := orm.NewOrm()
 	v := Company{Id: id}
 	// ascertain id exists in the database
