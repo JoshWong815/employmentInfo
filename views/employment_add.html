@@ -38,8 +38,11 @@
       var Cname= document.getElementById('Cname');
       var Cname=Cname.value;
 
-      var Oname= document.getElementById('Oname');
-      var Oname=Oname.value;
+      var Reason= document.getElementById('Reason');
+      var Reason=Reason.value;
+
+             var Oname= document.getElementById('Oname');
+             var Oname=Oname.value;
              if (!Sid){  //如果用户没有输入学号
                  alert('请输入学号！');
                  return false;
@@ -49,9 +52,17 @@
                  alert('请选择操作类型！');
                  return false;
              }
+            if(Operation=='解约') {
+                if (!Reason) {  //如果用户没有填写解约理由
+                    alert('请填写解约理由！');
+                    return false;
+                }
+            }
+
              if (Operation==="从未签约"){
+
                  return true;
-             }else {
+             }else if (Operation==="签约"){
 
                  if (!Employed) {  //如果用户没有选择是否签约
                      alert('请选择是否签约');
@@ -69,6 +80,7 @@
                      return false;
                  }
              }
+
 
 
      
@@ -391,10 +403,8 @@
             // Employed.value="是"
             Employed.options.remove("是");
             Employed.options.add(new Option("否","否"));
-
             Oname.options.length=0;
             Cname.options.length=0;
-
             Cname.style.display="none";
             Oname.style.display="none";
 
@@ -421,7 +431,7 @@
 
             success:function (data) {
                 console.log("data的值为：",data)
-                if(data==='t'){
+                if(data==='employed'){
                 alert("该学生已经签约！只能进行解约操作！")
                     //$("#id_username").next().text(data.msg).parent().parent().addClass("has-error");
                     let Operation = document.getElementById("Operation");
@@ -432,18 +442,22 @@
                     //Operation.options.remove(1);
 
                     //Operation.options.add(new Option("--请选择解约--", "",true,true))
+                    // let Reason = document.getElementById("Reason");
+                    // if (Reason.value===""){
+                    //     alert("请填写解约原因")
+                    //
+                    // }
 
 
-
-                }else {
+                }else if(data==='unemployed'){
 
                     $.ajax({
-                        url:"getAllCompanys",
+                        url:"getAllCompanyNames",
                         type: "get",
                         //data:sidValue,
 
                         success:function (data) {
-                            console.log(data)
+                            console.log(data);
                             let Cname = document.getElementById("Cname");
                             //console.log("data.value:",data.value)
                             for (i=0;i<data.length;i++){
@@ -456,7 +470,7 @@
 
                     var Operation = document.getElementById("Operation");
                     Operation.options.add(new Option("签约", "签约"))
-                    Operation.options.add(new Option("从未签约", "从未签约"))
+                    //Operation.options.add(new Option("从未签约", "从未签约"))
                    // Operation.options.length=0;
                     // var op = Operation.options;
                     // console.log(op);
@@ -475,6 +489,48 @@
 
 
 
+                } else if (data==='neverBothEmployOrNever'){
+
+                    $.ajax({
+                        url:"getAllCompanyNames",
+                        type: "get",
+                        //data:sidValue,
+
+                        success:function (data) {
+                            console.log(data);
+                            let Cname = document.getElementById("Cname");
+                            //console.log("data.value:",data.value)
+                            for (i=0;i<data.length;i++){
+                                Cname.options.add(new Option(data[i].Name, data[i].Name));
+                            }
+                        }
+                    });
+
+                    var Operation = document.getElementById("Operation");
+                    Operation.options.add(new Option("签约", "签约"))
+                    Operation.options.add(new Option("从未签约", "从未签约"))
+
+                }
+                else if (data==='neverOnlyEmploy'){
+
+                    $.ajax({
+                        url:"getAllCompanyNames",
+                        type: "get",
+                        //data:sidValue,
+
+                        success:function (data) {
+                            console.log(data);
+                            let Cname = document.getElementById("Cname");
+                            //console.log("data.value:",data.value)
+                            for (i=0;i<data.length;i++){
+                                Cname.options.add(new Option(data[i].Name, data[i].Name));
+                            }
+                        }
+                    });
+
+                    var Operation = document.getElementById("Operation");
+
+                    Operation.options.add(new Option("签约", "签约"))
                 }
 
 

@@ -19,7 +19,7 @@ func (c *EmploymentController) URLMapping() {
 	c.Mapping("GetNowCompany", c.GetNowCompany)
 	c.Mapping("CheckSid", c.CheckSid)
 	c.Mapping("GetSidEmployment", c.GetSidEmployment)
-	c.Mapping("GetAllCompanys", c.GetAllCompanys)
+	c.Mapping("GetAllCompanyNames", c.GetAllCompanyNames)
 }
 //当已签约的用户要解约时，查出他当前已签约的单位和岗位
 func (c *EmploymentController) GetSidEmployment(){
@@ -105,7 +105,7 @@ func (c *EmploymentController) GetAllOfferIdAndNameInEmployment(s string)  []*mo
 }
 
 //在添加签约信息页面中获取当前所有的单位名称
-func (c *EmploymentController) GetAllCompanys()  {
+func (c *EmploymentController) GetAllCompanyNames()  {
 	var companys []*models.Company
 	companys,err:=models.GetAllCompanyIdAndNameInEmployment()
 	if err!=nil{

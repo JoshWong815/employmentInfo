@@ -239,33 +239,40 @@ func InsertAnEmployment(e Employment,Cid,Oid int) error{
 func CheckSid(sid string) (string,error){
 	var maps []orm.Params
 	var maps2 []orm.Params
+	var maps3 []orm.Params
 	sql:="select * from employment where sid="+sid +" and operation='签约' and employed='是'"
 	sql2:="select * from employment where sid="+sid+" and operation='解约'"
-
+	sql3:="select * from employment where sid="+sid+" and operation='从未签约'"
 	fmt.Println(sql)
 	fmt.Println(sql2)
+	fmt.Println(sql3)
 	o:=orm.NewOrm()
 	res,_:=o.Raw(sql).Values(&maps)
 	res2,_:=o.Raw(sql2).Values(&maps2)
+	res3,_:=o.Raw(sql3).Values(&maps3)
 	fmt.Println("res的值为：",res)
 	fmt.Println("res2的值为：",res2)
-	//if err!=nil{
-	//	fmt.Println(err)
-	//	return "f",err
-	//}
-	//if err2!=nil{
-	//	fmt.Println(err2)
-	//	return "f",err2
-	//}
+	fmt.Println("res3的值为：",res3)
+	//1.从未签约过，可签约 2.已签约，只能解约 3.已解约，可签约
+
 	//签约的记录总数减去解约的记录总数，如果等于一，说明该名学生当前已经签约了，只能进行解约操作，返回t
 	if (res-res2==1){
-		return "t",nil
+		return "employed",nil
 	}
-	//签约的记录总数减去解约的记录总数，如果等于0，说明该名学生当前已经解约了或者从未签约过，返回f
-	if (res-res2==0){
-		return "f",nil
+
+	//签约的记录总数减去解约的记录总数，如果等于0，并且签约的次数不等于0，说明该名学生当前已经解约了，可以签约，返回f
+	if (res-res2==0&&res!=0){
+		return "unemployed",nil
 	}
-	return "f",nil
+	//签约的记录总数减去解约的记录总数，如果等于0，并且从未签约过，说明该名学生从未签约过，可以签约，返回f
+	if(res-res2==0&&res3==0){
+		return "neverBothEmployOrNever",nil
+	}
+	//签约的记录总数减去解约的记录总数，如果等于0，并且从未签约过，说明该名学生从未签约过，只能进行签约
+	if(res-res2==0&&res3==1){
+		return "neverOnlyEmploy",nil
+	}
+	return "",nil
 }
 
 //当已签约的用户要解约时，查出他当前已签约的单位和岗位

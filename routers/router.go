@@ -37,7 +37,7 @@ func init() {
 	beego.Router("/getNowCompany", &controllers.EmploymentController{},"*:GetNowCompany")
 	beego.Router("/checkSid", &controllers.EmploymentController{},"*:CheckSid")
 	beego.Router("/getSidEmployment", &controllers.EmploymentController{},"*:GetSidEmployment")
-	beego.Router("/getAllCompanys", &controllers.EmploymentController{},"*:GetAllCompanys")
+	beego.Router("/getAllCompanyNames", &controllers.EmploymentController{},"*:GetAllCompanyNames")
 
 
 	beego.Router("/getAllCompanys", &controllers.CompanyController{},"get:GetAllCompanys")
