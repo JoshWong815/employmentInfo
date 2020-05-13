@@ -11,6 +11,21 @@ func init() {
 	beego.Router("/loginTest", &controllers.MainController{},"*:LoginTest")
 	beego.Router("/logout", &controllers.MainController{},"*:Logout")
 	beego.Router("/index", &controllers.MainController{},"*:Index")
+
+
+	beego.Router("/studentMainPage", &controllers.SingleStudentController{},"*:StudentMainPage")
+	beego.Router("/singleStudentInfo", &controllers.SingleStudentController{},"*:SingleStudentInfo")
+	beego.Router("/singleStudentUpdating", &controllers.SingleStudentController{},"*:SingleStudentUpdating")
+
+
+
+	beego.Router("/getAllAdmins", &controllers.AdminController{},"get:GetAllAdmins")
+	beego.Router("/updateAdmin", &controllers.AdminController{},"*:UpdateAdmin")
+	beego.Router("/AdminUpdating", &controllers.AdminController{},"*:AdminUpdating")
+	beego.Router("/deleteAdmin", &controllers.AdminController{},"*:DeleteAdmin")
+	beego.Router("/addAdmin", &controllers.AdminController{},"*:AddAdmin")
+	beego.Router("/adminAdding", &controllers.AdminController{},"*:AdminAdding")
+	beego.Router("/showAdmins", &controllers.AdminController{},"get:ShowAdmins")
 	
 	beego.Router("/getAllStudents", &controllers.StudentController{},"get:GetAllStudents")
 	beego.Router("/updateStudent", &controllers.StudentController{},"*:UpdateStudent")

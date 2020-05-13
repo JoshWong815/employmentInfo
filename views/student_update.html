@@ -61,7 +61,7 @@
 
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return ManOrWomen()">
     <div class="sidebar">
         <div class="menu-control toggle-sidebar">
             <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i> Flat Admin</a>
@@ -246,9 +246,9 @@
                                     <label for="inputPassword3" class="col-sm-3 control-label" >性别</label>
                                     <div class="col-sm-9">
 
-                                        <select class="form-control" id="Sex" name="Sex">
-                                            <option value="男">男</option>
-                                            <option value="女">女</option>
+                                        <select class="form-control" id="Sex" name="Sex" >
+
+
                                         </select>
 
                                     </div>
@@ -279,5 +279,22 @@
                 </div>
                 
 </body>
+<script>
+    function ManOrWomen() {
+      let Sex=document.getElementById("Sex");
+      //Sex.options.length=0;
+        console.log(Sex.value);
+        console.log("list",{{.list.Sex}});
+        let  listsex={{.list.Sex}}
+        if (listsex==="男"){
+            Sex.options.add(new Option("男","男"))
+            Sex.options.add(new Option("女","女"))
+        }else{
+            Sex.options.add(new Option("女","女"))
+            Sex.options.add(new Option("男","男"))
+        }
 
+    }
+
+</script>
 </html>

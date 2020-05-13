@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"employmentInfo/models"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -16,14 +15,17 @@ func (c *MainController) URLMapping() {
 	c.Mapping("LoginTest", c.LoginTest)
 	c.Mapping("Logout", c.Logout)
 
+
 }
+
 func (c *MainController)SessionTest() {
 	c.Data["id"] = c.GetSession("id")
 	if c.Data["id"] == nil {
 		c.Redirect("/login", 302)
 	}
-	fmt.Println("id:",c.Data["id"])
-	fmt.Println("ceshi")
+	i:=c.GetSessionNum()
+	fmt.Println("当前活跃的session数：",i)
+
 }
 func(c *MainController) GetSessionNum() int {
 	return beego.GlobalSessions.GetActiveSession()
@@ -44,17 +46,46 @@ func (c *MainController) LoginTest() {
 	//c.TplName="login.html"
 	id := c.Input().Get("id")
 	password := c.Input().Get("password")
-		o := orm.NewOrm()
-		var student models.Student
-		qs := o.QueryTable(student)
-		err1 := qs.Filter("id", id).Filter("password", password).One(&student)
 
-		if err1 == nil {
+	var maps1 []orm.Params
+	var maps2 []orm.Params
+		o := orm.NewOrm()
+		//var student models.Student
+		//qs := o.QueryTable(student)
+
+		sql1:="select * from admin where id='"+id+"' and password='"+password+"'";
+		fmt.Println(sql1)
+		res1,err1:=o.Raw(sql1).Values(&maps1)
+
+		sql2:="select * from student where id='"+id+"' and password='"+password+"'";
+		fmt.Println(sql2)
+		res2,err2:=o.Raw(sql2).Values(&maps2)
+
+		fmt.Println("res1的值为：",res1)
+		fmt.Println("res2的值为：",res2)
+
+	    if err1!=nil{
+	    	fmt.Println(err1)
+		}
+		if err2!=nil{
+		fmt.Println(err2)
+		}
+		//err1 := qs.Filter("id", id).Filter("password", password).One(&student)
+		//如果是管理员用户
+		if res1 == 1 && res2==0{
 			//fmt.Println(user.name,user.Password)
 			c.SetSession("id",id)
 			c.Data["id"]=c.GetSession("id")
 			//Sessionid=c.CruSession.SessionID()
 			c.Redirect("/index", 302)
+		//如果是学生用户
+		}else if res1 == 0 && res2==1{
+		//fmt.Println(user.name,user.Password)
+		c.SetSession("id",id)
+		fmt.Println("id的值为：",id)
+
+		//Sessionid=c.CruSession.SessionID()
+		c.Redirect("/studentMainPage", 302)
 
 		} else if err1 == orm.ErrNoRows {
 			str := "用户名或密码输入错误!"

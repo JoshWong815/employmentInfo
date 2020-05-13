@@ -33,10 +33,10 @@
       var note= document.getElementById('Note');
       var note=note.value;
 
-             if (!id){  //如果用户没有输入单位id
-                 alert('请输入单位id！');
-                 return false;
-             }
+             // if (!id){  //如果用户没有输入单位id
+             //     alert('请输入单位id！');
+             //     return false;
+             // }
       if (!name){  //如果用户没有输入单位名称
           alert('请输入单位名称！');
           return false;
@@ -192,12 +192,12 @@
                         <form class="form-horizontal" action="/companyAdding" method="post" onsubmit="return check()">
                             <div class="block-content">
 
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-3 control-label">单位id</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="单位Id">
-                                    </div>
-                                </div>
+{{/*                                <div class="form-group">*/}}
+{{/*                                    <label for="inputPassword3" class="col-sm-3 control-label">单位id</label>*/}}
+{{/*                                    <div class="col-sm-9">*/}}
+{{/*                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="单位Id">*/}}
+{{/*                                    </div>*/}}
+{{/*                                </div>*/}}
 
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">单位名称</label>

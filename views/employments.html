@@ -30,7 +30,7 @@
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return onload()">
 <div class="sidebar">
     <div class="menu-control toggle-sidebar">
         <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
@@ -194,7 +194,7 @@
                 <div class="content-block">
                     <div class="block-title">签约信息表</div>
                     <div class="block-content">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="tab">
                             <thead>
                             <tr>
 
@@ -211,17 +211,17 @@
                             <tbody>
 
                             {{range .json}}
-                                <tr >
+                                <tr id="shuju">
 
                                     <td class="text-center" >{{.Id}}</td>
                                     <td class="text-center" >{{.Sid}}</td>
-                                    <td class="text-center" >{{.Operation}}</td>
+                                    <td class="text-center" id="Operation">{{.Operation}}</td>
                                     <td class="text-center" >{{.Employed}}</td>
                                     <td class="text-center">{{.Cname}}</td>
                                     <td class="text-center" >{{.Oname}}</td>
                                     <td class="text-center" >{{.Reason}}</td>
 
-                                    <td class="text-center" ><a href="/updateEmployment?id={{.Id}}" class="btn btn-info" >修改</a></td>
+                                    <td class="text-center" ><a href="/updateEmployment?id={{.Id}}" class="btn btn-info" id="UpdateButton">修改</a></td>
                                     <td class="text-center" ><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>
                                 </tr>
                             {{end}}
@@ -238,7 +238,27 @@
 
 
 </body>
+<script>
+    function onload() {
+        //location.reload([true])
+        let tab=document.getElementById("tab");
+        for(var i=0;i<tab.rows.length-1;i++)
+        {
+            //alert(tab.rows[i].cells[3].value);
 
+            if (tab.rows[i].cells[2].innerText==="解约"){
+
+                console.log(tab.rows[i].cells[2].innerText);
+                //将删除按钮去掉
+                tab.rows[i].cells[7].style.display="none";
+                tab.rows[i].cells[8].style.colspan="2";
+                //tab.rows[i].cells[8].style.width="100%";
+            }
+        }
+
+    }
+
+</script>
 
 
 

@@ -137,15 +137,15 @@ func (c *StudentController) ShowStudents() {
 func (c *StudentController) UpdateStudent(){
 	id:=c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
-	fmt.Println("id:",id)
-	fmt.Println("id:",id)
+	//fmt.Println("id:",id)
+	//fmt.Println("id:",id)
 	//intid, _ := strconv.Atoi(id)
 	//student,err:=models.GetStudentById(int64(intid))
 	student,err:=models.GetStudentById(id)
 	if err!=nil{
 		fmt.Println(err)
 	}
-	fmt.Println("该名学生的信息：",student)
+	//fmt.Println("该名学生的信息：",student)
     c.Data["list"]=student
     c.TplName="student_update.html"
 }

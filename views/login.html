@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Flat Admin - Bootstrap Themes</title>
+    <title>高校就业信息管理系统</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -30,6 +30,8 @@
                 alert('请输入密码！');
                 return false;
             }
+            let userType=document.getElementById("userType");
+            console.log(userType.value)
             return true;
         }
 
@@ -61,6 +63,21 @@
                             <div class="label">密码</div>
                             <input type="password" class="form-control" style="width: 100%" name="password" id="password" value="" />
                         </div>
+
+
+
+{{/*                        <div class="control">*/}}
+{{/*                            <div class="label">用户类型</div>*/}}
+{{/*                            <select class="form-control" style="width:100%" name="userType" id="userType" value="">*/}}
+{{/*                                <option value="管理员" style="color:black">管理员</option>*/}}
+{{/*                                <option value="学生" style="color:black">学生</option>*/}}
+{{/*                            </select>*/}}
+
+{{/*                        </div>*/}}
+
+
+
+
                         <div class="login-button">
                             <input type="submit" class="btn btn-orange" value="Login"></button>
                         </div>
