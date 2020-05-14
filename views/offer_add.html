@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>就业信息管理</title>
+    <title>岗位信息管理</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -27,8 +27,8 @@
 
       var name= document.getElementById('Name');
       var name=name.value;
-      var cid= document.getElementById('Cid');
-      var cid=cid.value;
+      var cname= document.getElementById('Cname');
+      var cname=cname.value;
       var note= document.getElementById('Note');
       var note=note.value;
 
@@ -38,7 +38,7 @@
           return false;
       }
         
-       if(!cid){ //如果用户没有输入所属公司
+       if(!cname){ //如果用户没有输入所属公司
           alert('请输入所属公司！');
           return false;
       }
@@ -54,7 +54,7 @@
     </script>
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return getAllCompanys()">
     <div class="sidebar">
         <div class="menu-control toggle-sidebar">
             <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
@@ -74,7 +74,7 @@
                 <a href="/getAllOffers">
                     <div>
                         <i class="menu-icon fa fa-table"></i>
-                        <span class="menu-title">就业信息表</span>
+                        <span class="menu-title">岗位信息表</span>
                     </div>
                 </a>
             </li>
@@ -82,7 +82,7 @@
                 <a href="/addOffer" class="active">
                     <div>
                         <i class="menu-icon fa fa-file-text-o"></i>
-                        <span class="menu-title">添加就业信息</span>
+                        <span class="menu-title">添加岗位信息</span>
                     </div>
                 </a>
             </li>
@@ -105,7 +105,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>就业信息管理</a>
+                        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>岗位信息管理</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -187,34 +187,37 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="content-block">
-                        <div class="block-title">添加就业信息</div>
+                        <div class="block-title">添加岗位信息</div>
                         <form class="form-horizontal" action="/offerAdding" method="post" onsubmit="return check()">
                             <div class="block-content">
 
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-3 control-label">岗位id</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="Id">
-                                    </div>
-                                </div>
+{{/*                                <div class="form-group">*/}}
+{{/*                                    <label for="inputPassword3" class="col-sm-3 control-label">岗位id</label>*/}}
+{{/*                                    <div class="col-sm-9">*/}}
+{{/*                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="Id">*/}}
+{{/*                                    </div>*/}}
+{{/*                                </div>*/}}
 
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">岗位名称</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Name">
+                                        <input type="text" class="form-control" id="Name" name="Name" placeholder="请输入岗位名称">
                                     </div>
                                 </div>
                                 
                                   <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">所属公司</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Cid" name="Cid" placeholder="Cid">
+{{/*                                        <input type="text" class="form-control" id="Cname" name="Cname" placeholder="请输入所属公司">*/}}
+                                        <select class="form-control" id="Cname" name="Cname">
+
+                                        </select>
                                     </div>
                                 </div>
                                   <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">岗位描述</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" style="word-wrap:break-word;height:500px;text-align: left" id="Note" name="Note">{{.list.Note}}</textarea>
+                                        <textarea type="text" class="form-control" style="word-wrap:break-word;height:500px;text-align: left" id="Note" name="Note"></textarea>
                                     </div>
                                 </div>
 
@@ -235,5 +238,26 @@
                 </div>
                
 </body>
+<script>
+    function getAllCompanys() {
+        // let Cname=document.getElementById("Cname")
+        $("#Cname").find("option").remove();
+        $.ajax({
+                type:"get",
+                url:"getAllCompanyInOffer",
+                //data:data,
+                datatype:'json',
+                success:function(res){//res后台返回的数据
+                    console.log("res的值为：",res);
+                    $.each(res, function(index, item) {
+                        $("#Cname").append( //此处向select中循环绑定数据
+                            "<option value="+item.Name+">" + item.Name+ "</option>");
+                    });
+                }
+            }
+        );
+
+    }
+</script>
 
 </html>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>就业信息管理</title>
+    <title>岗位信息管理</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -75,7 +75,7 @@
             <a href="/getAllOffers" class="active">
                 <div>
                     <i class="menu-icon fa fa-table"></i>
-                    <span class="menu-title">就业信息管理</span>
+                    <span class="menu-title">岗位信息管理</span>
                 </div>
             </a>
         </li>
@@ -115,7 +115,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>就业信息管理</a>
+                    <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>岗位信息管理</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -199,7 +199,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="content-block">
-                    <div class="block-title">就业信息表</div>
+                    <div class="block-title">岗位信息表</div>
                     <div class="block-content">
                         <table class="table table-hover">
                             <thead>
@@ -220,7 +220,7 @@
 
                                     <td class="text-center" width="10%">{{.Id}}</td>
                                     <td class="text-center" width="10%">{{.Name}}</td>
-                                    <td class="text-center" width="10%">{{.Cid}}</td>
+                                    <td class="text-center" width="10%">{{.Cname}}</td>
                                     <td class="text-center" width="50%" style="white-space:pre-line;text-align: left">{{.Note}}</td>
 
                                     <td class="text-center" width="10%"><a href="/updateOffer?id={{.Id}}" class="btn btn-info" >修改</a></td>

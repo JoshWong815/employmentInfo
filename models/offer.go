@@ -1,144 +1,174 @@
 package models
 
 import (
-	"errors"
 	"fmt"
-	"reflect"
-	"strings"
-
 	"github.com/astaxie/beego/orm"
+	"strconv"
 )
 
 type Offer struct {
 	Id   int
 	Name string `orm:"size(128)"`
-	Cid  int
+	Cname string `orm:"size(128)"`
 	Note string `orm:"size(128)"`
 }
 
 func init() {
 	orm.RegisterModel(new(Offer))
 }
+//获得当前所有的单位名称
+func GetAllCompanyInOffer() ([]*Company,error){
+	var maps []orm.Params
+	var companys []*Company
+	o:=orm.NewOrm()
+	sql:="select id,name from company"
+	res,err:=o.Raw(sql).Values(&maps)
+	if err!=nil{
+		fmt.Println("查询所有company时出错：",err)
+		return companys,err
+	}
+	fmt.Print("res的值为：",res)
 
-// AddOffer insert a new Offer into database and returns
-// last inserted Id on success.
-func AddOffer(m *Offer) (id int64, err error) {
-	o := orm.NewOrm()
-	id, err = o.Insert(m)
-	return
+	for i:=range maps{
+		var company Company
+		map1:=maps[i]
+		company.Id,_=strconv.Atoi((map1["id"].(string)))
+		//对岗位名称进行断言
+		name,ok:=map1["name"].(string)
+		if ok{
+			company.Name=name
+		}else {
+			company.Name=""
+		}
+		fmt.Print(company)
+		companys=append(companys,&company)
+	}
+	//fmt.Println("companys:",&companys)
+	return companys,err
+
+
 }
 
-// GetOfferById retrieves Offer by Id. Returns error if
-// Id doesn't exist
-func GetOfferById(id int) (v *Offer, err error) {
-	o := orm.NewOrm()
-	v = &Offer{Id: id}
-	if err = o.QueryTable(new(Offer)).Filter("Id", id).RelatedSel().One(v); err == nil {
-		return v, nil
+
+//往数据库中插入一条employment记录
+func InsertAnOffer(e Offer,Cid int) error{
+
+	cid:=strconv.Itoa(Cid)
+
+	var sql string
+	sql="insert into offer(name,cid,note) values('"+e.Name+"',"+cid+",'"+e.Note+"')"
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	res,err:=o.Raw(sql).Exec()
+	if err == nil {
+		num, _ := res.RowsAffected()
+		fmt.Println("mysql row affected nums: ", num)
+		fmt.Println("res:",res)
+	}else {
+		fmt.Print(err)
+		return err
 	}
-	return nil, err
+	return nil
+}
+
+
+func GetOfferById(id int) (Offer,error) {
+
+	var offer Offer
+	o := orm.NewOrm()
+	idStr:=strconv.Itoa(id)
+	sql:="select o.id,o.name,c.name cname,o.note from offer o,company c where o.cid=c.id and o.id= "+idStr
+	fmt.Println(sql)
+	err:=o.Raw(sql).QueryRow(&offer)
+	if err!=nil{
+		fmt.Println("查询单条offer是出错：",err)
+
+	}
+	fmt.Println("offer:",offer)
+	return offer,err
+
 }
 
 // GetAllOffer retrieves all Offer matches certain condition. Returns empty list if
 // no records exist
-func GetAllOffer(query map[string]string, fields []string, sortby []string, order []string,
-	offset int64, limit int64) (ml []interface{}, err error) {
+func GetAllOffers() ([]*Offer,error) {
+	var maps []orm.Params
+	var offers []*Offer
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Offer))
-	// query k=v
-	for k, v := range query {
-		// rewrite dot-notation to Object__Attribute
-		k = strings.Replace(k, ".", "__", -1)
-		qs = qs.Filter(k, v)
+	sql:="select o.id,o.name,c.name cname,o.note from company c,offer o where o.cid=c.id "
+	a,err:=o.Raw(sql).Values(&maps)
+	fmt.Println("a:",a)
+	if err!=nil{
+		fmt.Println(err)
 	}
-	// order by:
-	var sortFields []string
-	if len(sortby) != 0 {
-		if len(sortby) == len(order) {
-			// 1) for each sort field, there is an associated order
-			for i, v := range sortby {
-				orderby := ""
-				if order[i] == "desc" {
-					orderby = "-" + v
-				} else if order[i] == "asc" {
-					orderby = v
-				} else {
-					return nil, errors.New("Error: Invalid order. Must be either [asc|desc]")
-				}
-				sortFields = append(sortFields, orderby)
-			}
-			qs = qs.OrderBy(sortFields...)
-		} else if len(sortby) != len(order) && len(order) == 1 {
-			// 2) there is exactly one order, all the sorted fields will be sorted by this order
-			for _, v := range sortby {
-				orderby := ""
-				if order[0] == "desc" {
-					orderby = "-" + v
-				} else if order[0] == "asc" {
-					orderby = v
-				} else {
-					return nil, errors.New("Error: Invalid order. Must be either [asc|desc]")
-				}
-				sortFields = append(sortFields, orderby)
-			}
-		} else if len(sortby) != len(order) && len(order) != 1 {
-			return nil, errors.New("Error: 'sortby', 'order' sizes mismatch or 'order' size is not 1")
+	//fmt.Println(maps)
+	for i:=range maps{
+		var offer Offer
+		map1:=maps[i]
+		offer.Id,_=strconv.Atoi((map1["id"].(string)))
+		//对岗位名称进行断言
+		name,ok:=map1["name"].(string)
+		if ok{
+			offer.Name=name
+		}else {
+			offer.Name=""
 		}
-	} else {
-		if len(order) != 0 {
-			return nil, errors.New("Error: unused 'order' fields")
-		}
-	}
 
-	var l []Offer
-	qs = qs.OrderBy(sortFields...).RelatedSel()
-	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
-		if len(fields) == 0 {
-			for _, v := range l {
-				ml = append(ml, v)
-			}
-		} else {
-			// trim unused fields
-			for _, v := range l {
-				m := make(map[string]interface{})
-				val := reflect.ValueOf(v)
-				for _, fname := range fields {
-					m[fname] = val.FieldByName(fname).Interface()
-				}
-				ml = append(ml, m)
-			}
+		//对单位名称进行断言
+		cname,ok:=map1["cname"].(string)
+		if ok{
+			offer.Cname=cname
+		}else {
+			offer.Cname=""
 		}
-		return ml, nil
+
+		//对岗位概述进行断言
+		note,ok:=map1["note"].(string)
+		if ok{
+			offer.Note=note
+		}else {
+			offer.Note=""
+		}
+		offers=append(offers,&offer)
 	}
-	return nil, err
+	return offers,nil
+	
 }
 
 // UpdateOffer updates Offer by Id and returns error if
 // the record to be updated doesn't exist
-func UpdateOfferById(m *Offer) (err error) {
-	o := orm.NewOrm()
-	v := Offer{Id: m.Id}
-	// ascertain id exists in the database
-	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Update(m); err == nil {
-			fmt.Println("Number of records updated in database:", num)
-		}
+func UpdateOfferById(o *Offer) (err error) {
+	orm := orm.NewOrm()
+	idStr:=strconv.Itoa(o.Id)
+	cid,err:=GetCidByCname(o.Cname)
+	cidStr:=strconv.Itoa(cid)
+	if err!=nil{
+		fmt.Println(err)
+		return err
 	}
-	return
+	sql:="update  offer set name='"+o.Name+"',cid="+cidStr+",note='"+o.Note+"' where id="+idStr
+	fmt.Println(sql)
+	res,err:=orm.Raw(sql).Exec()
+	if err!=nil {
+		fmt.Println("err的值为：", err)
+	}
+	fmt.Println("res的值为：",res)
+
+	return err
 }
 
 // DeleteOffer deletes Offer by Id and returns error if
 // the record to be deleted doesn't exist
 func DeleteOffer(id int) (err error) {
 	o := orm.NewOrm()
-	v := Offer{Id: id}
-	// ascertain id exists in the database
-	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Delete(&Offer{Id: id}); err == nil {
-			fmt.Println("Number of records deleted in database:", num)
-		}
+	idStr:=strconv.Itoa(id)
+	sql:="delete from offer where id="+idStr
+	fmt.Println(sql)
+	res,err:=o.Raw(sql).Exec()
+	if err!=nil{
+		fmt.Println(err)
+		return err
 	}
-	return
+	fmt.Println(res)
+	return err
 }

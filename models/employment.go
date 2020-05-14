@@ -190,7 +190,7 @@ func GetCidByCname(cname string) (int ,error){
 	o:=orm.NewOrm()
 	err:=o.Raw(sql).QueryRow(&cid)
 	if err!=nil{
-		fmt.Println(err)
+		fmt.Println("GetCidByCname出错",err)
 		return  0,err
 	}
 
@@ -295,4 +295,8 @@ func GetSidEmployment(sid string) (string,string,error){
 		employments=append(employments,&e)
 	}
     return employments[0].Cname,employments[0].Oname,nil
+}
+
+func GetEmploymentById(id int){
+	sql:="select * from"
 }

@@ -240,13 +240,14 @@
 </body>
 <script>
     function onload() {
+        //加载页面时，将那些解约和从未签约的记录的修改按钮去掉，只能修改操作类型是签约的记录
         //location.reload([true])
         let tab=document.getElementById("tab");
         for(var i=0;i<tab.rows.length-1;i++)
         {
             //alert(tab.rows[i].cells[3].value);
 
-            if (tab.rows[i].cells[2].innerText==="解约"){
+            if (tab.rows[i].cells[2].innerText==="解约"||tab.rows[i].cells[2].innerText==="从未签约"){
 
                 console.log(tab.rows[i].cells[2].innerText);
                 //将删除按钮去掉
@@ -254,7 +255,11 @@
                 tab.rows[i].cells[8].style.colspan="2";
                 //tab.rows[i].cells[8].style.width="100%";
             }
+
         }
+
+        //加载页面时，只能修改操作类型是签约的记录，并且是最后一次签约的记录，即某个学生最新的签约记录
+
 
     }
 

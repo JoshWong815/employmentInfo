@@ -16,6 +16,12 @@ func init() {
 	beego.Router("/studentMainPage", &controllers.SingleStudentController{},"*:StudentMainPage")
 	beego.Router("/singleStudentInfo", &controllers.SingleStudentController{},"*:SingleStudentInfo")
 	beego.Router("/singleStudentUpdating", &controllers.SingleStudentController{},"*:SingleStudentUpdating")
+	beego.Router("/singleStudentCompanys", &controllers.SingleStudentController{},"*:SingleStudentCompanys")
+	beego.Router("/singleStudentOffers", &controllers.SingleStudentController{},"*:SingleStudentOffers")
+	beego.Router("/studentEmployTheOffer", &controllers.SingleStudentController{},"*:StudentEmployTheOffer")
+	beego.Router("/singleStudentEmploymentAdding", &controllers.SingleStudentController{},"*:SingleStudentEmploymentAdding")
+	beego.Router("/getSidEmployed", &controllers.SingleStudentController{},"*:GetSidEmployed")
+
 
 
 
@@ -43,6 +49,8 @@ func init() {
 	beego.Router("/deleteOffer", &controllers.OfferController{},"*:DeleteOffer")
 	beego.Router("/addOffer", &controllers.OfferController{},"*:AddOffer")
 	beego.Router("/offerAdding", &controllers.OfferController{},"*:OfferAdding")
+	beego.Router("/getAllCompanyInOffer", &controllers.OfferController{},"get:GetAllCompanyInOffer")
+
 
 	beego.Router("/getAllEmployments", &controllers.EmploymentController{},"get:GetAllEmployments")
 	//beego.Router("/updateEmployments", &controllers.EmploymentController{},"*:UpdateEmployment")
@@ -53,6 +61,8 @@ func init() {
 	beego.Router("/checkSid", &controllers.EmploymentController{},"*:CheckSid")
 	beego.Router("/getSidEmployment", &controllers.EmploymentController{},"*:GetSidEmployment")
 	beego.Router("/getAllCompanyNames", &controllers.EmploymentController{},"*:GetAllCompanyNames")
+	beego.Router("/updateEmployment", &controllers.EmploymentController{},"*:UpdateEmployment")
+
 
 
 	beego.Router("/getAllCompanys", &controllers.CompanyController{},"get:GetAllCompanys")

@@ -4,12 +4,9 @@ import "C"
 import (
 	"employmentInfo/models"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"strconv"
-	"strings"
-
 	"github.com/astaxie/beego"
+	"strconv"
 )
 
 //  OfferController operations for Offer
@@ -30,24 +27,30 @@ func (c *OfferController) URLMapping() {
 	c.Mapping("DeleteOffer",c.DeleteOffer)
 	c.Mapping("AddOffer",c.AddOffer)
 	c.Mapping("OfferAdding",c.OfferAdding)
+	c.Mapping("GetAllCompanyInOffer",c.GetAllCompanyInOffer)
 
 }
+func (c *OfferController) GetAllCompanyInOffer(){
+	companys,_:=models.GetAllCompanyInOffer()
+	c.Data["json"]=companys
+	c.ServeJSON()
+}
+
 func (c *OfferController) OfferAdding(){
-	var s models.Offer
-	if err := c.ParseForm(&s); err != nil {
+	var e models.Offer
+	if err := c.ParseForm(&e); err != nil {
 		fmt.Println("转换model失败")
-		c.Ctx.WriteString("转换model失败")
 		fmt.Println(err)
 	}
-	id, err := models.AddOffer(&s)
-	if err == nil && id > 0 {
+	fmt.Println(e)
+	Cid,_:=models.GetCidByCname(e.Cname)
+	fmt.Println("Cid:",Cid)
+	err:=models.InsertAnOffer(e,Cid)
+	if err!=nil{
+		fmt.Println(err)
+	}else {
 		c.Redirect("/getAllOffers", 302)
-	} else if err!=nil{
-		fmt.Println("第二次err添加失败")
-		//c.Ctx.WriteString("第二次err添加失败")
-		fmt.Println(err)
 	}
-	c.Redirect("/getAllOffers",302)
 }
 func (c *OfferController) AddOffer(){
 	c.TplName="offer_add.html"
@@ -71,7 +74,7 @@ func (c *OfferController) OfferUpdating() {
 	//u := models.Offer{Id: int64(intid)}
 	u := models.Offer{Id: intid}
 	if err := c.ParseForm(&u); err != nil {
-		fmt.Println(err)
+		fmt.Println("parse的错误为：",err)
 		c.Redirect("/updateOffer?id="+Id , 302)
 	}
 	fmt.Println(u)
@@ -95,28 +98,11 @@ func (c *OfferController) UpdateOffer(){
 	if err!=nil{
 		fmt.Println(err)
 	}
-	fmt.Println("该名学生的信息：",Offer)
+	//fmt.Println("该名学生的信息：",Offer)
 	c.Data["list"]=Offer
 	c.TplName="offer_update.html"
 }
-// Post ...
-// @Title Post
-// @Description create Offer
-// @Param	body		body 	models.Offer	true		"body for Offer content"
-// @Success 201 {int} models.Offer
-// @Failure 403 body is empty
-// @router / [post]
-func (c *OfferController) Post() {
-	var v models.Offer
-	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-	if _, err := models.AddOffer(&v); err == nil {
-		c.Ctx.Output.SetStatus(201)
-		c.Data["json"] = v
-	} else {
-		c.Data["json"] = err.Error()
-	}
-	c.ServeJSON()
-}
+
 
 // GetOne ...
 // @Title Get One
@@ -151,55 +137,12 @@ func (c *OfferController) GetOne() {
 // @router / [get]
 func (c *OfferController) GetAllOffers() {
 	c.Data["id"]=c.GetSession("id")
-	var fields []string
-	var sortby []string
-	var order []string
-	var query = make(map[string]string)
-	var limit int64 = 10
-	var offset int64
-
-	// fields: col1,col2,entity.col3
-	if v := c.GetString("fields"); v != "" {
-		fields = strings.Split(v, ",")
+	offers,err:=models.GetAllOffers()
+	if err!=nil{
+		c.Data["json"]=err
+	}else{
+		c.Data["json"]=offers
 	}
-	// limit: 10 (default is 10)
-	if v, err := c.GetInt64("limit"); err == nil {
-		limit = v
-	}
-	// offset: 0 (default is 0)
-	if v, err := c.GetInt64("offset"); err == nil {
-		offset = v
-	}
-	// sortby: col1,col2
-	if v := c.GetString("sortby"); v != "" {
-		sortby = strings.Split(v, ",")
-	}
-	// order: desc,asc
-	if v := c.GetString("order"); v != "" {
-		order = strings.Split(v, ",")
-	}
-	// query: k:v,k:v
-	if v := c.GetString("query"); v != "" {
-		for _, cond := range strings.Split(v, ",") {
-			kv := strings.SplitN(cond, ":", 2)
-			if len(kv) != 2 {
-				c.Data["json"] = errors.New("Error: invalid query key/value pair")
-				c.ServeJSON()
-				return
-			}
-			k, v := kv[0], kv[1]
-			query[k] = v
-		}
-	}
-
-	l, err := models.GetAllOffer(query, fields, sortby, order, offset, limit)
-	if err != nil {
-		c.Data["json"] = err.Error()
-	} else {
-		c.Data["json"] = l
-	}
-
-	//c.ServeJSON()
 	c.TplName="offers.html"
 
 }

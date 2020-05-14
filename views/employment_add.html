@@ -239,7 +239,7 @@
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">操作类型</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="Operation" name="Operation" onclick="return lockReasonAndChangeEmployed(value)">
+                                        <select class="form-control" id="Operation" name="Operation" onclick="return whenOperationChanged(value)">
 
 
                                         </select>
@@ -258,7 +258,7 @@
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">签约公司</label>
                                     <div class="col-sm-9">
-                                        <select class="form-control" id="Cname" name="Cname" onclick="return giveTheOfferId(value)">
+                                        <select class="form-control" id="Cname" name="Cname" onclick="return getCompanysOffer(value)">
 {{/*                                            <option value="">--请选择签约公司名称--</option>*/}}
 {{/*                                            {{range .companys}}*/}}
 {{/*                                            <option value="{{.Name}}">{{.Name}}</option>*/}}
@@ -325,7 +325,7 @@
     //     xhr.send(null);
     // }
     
-    function giveTheOfferId(value) {
+    function getCompanysOffer(value) {
         //第一条语句是为了解决如果用户选择了一个公司，下面的岗位列表显示出该公司的岗位，然后又选了另一个公司，但原来那个公司的岗位还在的问题
         $("#Oname").find("option").remove();
         $.ajax({
@@ -345,7 +345,7 @@
     }
 
 
-    function lockReasonAndChangeEmployed(value) {
+    function whenOperationChanged(value) {
        // var options=$('#Employed option:selected'); //获取选中的项
         let Sid = document.getElementById("Sid");
         let Reason = document.getElementById("Reason");
@@ -360,7 +360,7 @@
            Employed.options.remove("是")
             Reason.type = "text"
             Employed.options.add(new Option("否","否"))
-
+            Cname.onclick="null"
 
             $.ajax({
                     type:"POST",

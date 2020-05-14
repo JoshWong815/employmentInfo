@@ -20,7 +20,26 @@ func (c *EmploymentController) URLMapping() {
 	c.Mapping("CheckSid", c.CheckSid)
 	c.Mapping("GetSidEmployment", c.GetSidEmployment)
 	c.Mapping("GetAllCompanyNames", c.GetAllCompanyNames)
+	c.Mapping("UpdateEmployment", c.UpdateEmployment)
+
+
 }
+//修改签约信息页面跳转
+func (c *EmploymentController) UpdateEmployment(){
+	id:=c.GetString("id")
+	fmt.Println("id:",id)
+	intid, _ := strconv.Atoi(id)
+	Employment,err:=models.GetEmploymentById(intid)
+
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("该单位的信息：",Company)
+	c.Data["list"]=Company
+	c.TplName="company_update.html"
+	c.TplName="employment_update.html"
+}
+
 //当已签约的用户要解约时，查出他当前已签约的单位和岗位
 func (c *EmploymentController) GetSidEmployment(){
 	sid:=c.GetString("sid")

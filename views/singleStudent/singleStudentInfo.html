@@ -62,7 +62,7 @@
 
 </head>
 
-<body class="flat-blue sidebar-collapse" onload="return ManOrWomen()">
+<body class="flat-blue sidebar-collapse" onload="return ManOrWomenAndCOname()">
 <div class="sidebar">
     <div class="menu-control toggle-sidebar">
         <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i> Flat Admin</a>
@@ -254,6 +254,25 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">签约公司</label>
+                                <div class="col-sm-9">
+
+                                    <input type="text" readonly="readonly" class="form-control" id="Cname"  value="">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-3 control-label">签约岗位</label>
+                                <div class="col-sm-9">
+
+                                    <input type="text" readonly="readonly" class="form-control" id="Oname"  value="">
+
+                                </div>
+                            </div>
+
+
                         </div>
                         <div class="block-footer">
                             <div class="form-group">
@@ -272,7 +291,8 @@
 
 </body>
 <script>
-    function ManOrWomen() {
+    //判断该名学生的性别，以及如果已签约的话，获得他当前的签约单位和岗位
+    function ManOrWomenAndCOname() {
     let Sex=document.getElementById("Sex");
 //Sex.options.length=0;
     console.log(Sex.value);
@@ -285,6 +305,36 @@
         Sex.options.add(new Option("女","女"))
         Sex.options.add(new Option("男","男"))
 }
+
+        $.ajax({
+            url:"getSidEmployment?sid="+Id.value,
+            type: "get",
+            //data:sidValue,
+
+            success:function (data) {
+                console.log(data);
+                let Cname=document.getElementById("Cname");
+                let Oname=document.getElementById("Oname");
+                Cname.value=data.Cname
+                Oname.value=data.Oname
+            }
+        });
+//检查一下该名学生是否签约了
+        $.ajax({
+            url:"getSidEmployed?sid="+Id.value,
+            type: "get",
+            //data:sidValue,
+
+            success:function (data) {
+                console.log("data的值为：",data);
+            if(data==="0"){
+                let Cname=document.getElementById("Cname");
+                let Oname=document.getElementById("Oname");
+                Cname.value=null
+                Oname.value=null
+            }
+            }
+        });
 
 }
 </script>
