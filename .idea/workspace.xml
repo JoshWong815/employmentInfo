@@ -2,24 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15f397e6-96b4-4925-97b9-db71f14f76c3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/views/singleStudent/singleStudentCompanys.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/singleStudent/singleStudentEmployTheOffer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/singleStudent/singleStudentOffers.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/employment_update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/employment.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/employment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/offer.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/offer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/singleStudent.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/singleStudent.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/employmentInfo.exe" beforeDir="false" afterPath="$PROJECT_DIR$/employmentInfo.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/employment.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/employment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/offer.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/offer.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/employment_add.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/employment_add.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/employments.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/employments.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/offer_add.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/offer_add.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/offer_update.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/offer_update.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/offers.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/offers.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/singleStudent/singleStudentInfo.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/singleStudent/singleStudentInfo.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/singleStudent/studentMainPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/singleStudent/studentMainPage.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,29 +38,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/employment_update.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret line="265" column="58" selection-start-line="265" selection-start-column="58" selection-end-line="265" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/views/employments.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="256" column="13" lean-forward="true" selection-start-line="256" selection-start-column="13" selection-end-line="256" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routers/router.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="63" column="59" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/employment.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="31" column="44" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="44" />
+            <state relative-caret-position="286">
+              <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
               <folding>
                 <element signature="e#21#113#0" expanded="true" />
               </folding>
@@ -79,17 +62,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/employment.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+            <state relative-caret-position="237">
+              <caret line="335" column="14" selection-start-line="335" selection-start-column="14" selection-end-line="335" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/company.go">
+        <entry file="file://$PROJECT_DIR$/models/offer.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="88" column="4" selection-start-line="88" selection-start-column="4" selection-end-line="99" selection-end-column="35" />
+            <state relative-caret-position="680">
+              <caret line="172" column="14" selection-start-line="172" selection-start-column="14" selection-end-line="172" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -111,7 +94,6 @@
       <find>Offer</find>
       <find>就业</find>
       <find>单位</find>
-      <find>Company</find>
       <find>company</find>
       <find>this</find>
       <find>Student</find>
@@ -119,6 +101,7 @@
       <find>student</find>
       <find>employment</find>
       <find>get</find>
+      <find>Company</find>
     </findStrings>
     <replaceStrings>
       <replace>Offer</replace>
@@ -133,6 +116,7 @@
       <replace>管理员</replace>
       <replace>singleStudent</replace>
       <replace>offer</replace>
+      <replace>Employment</replace>
     </replaceStrings>
   </component>
   <component name="GOROOT" path="D:\go" />
@@ -142,7 +126,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/static/css/font-awesome.min.css" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
         <option value="$PROJECT_DIR$/static/css/bootstrap.min.css" />
@@ -185,14 +168,15 @@
         <option value="$PROJECT_DIR$/views/singleStudent/singleStudentCompanys.html" />
         <option value="$PROJECT_DIR$/views/singleStudent/singleStudentOffers.html" />
         <option value="$PROJECT_DIR$/views/singleStudent/studentMainPage.html" />
-        <option value="$PROJECT_DIR$/views/employment_add.html" />
         <option value="$PROJECT_DIR$/views/singleStudent/singleStudentEmployTheOffer.html" />
         <option value="$PROJECT_DIR$/views/singleStudent/singleStudentInfo.html" />
         <option value="$PROJECT_DIR$/controllers/singleStudent.go" />
+        <option value="$PROJECT_DIR$/views/employments.html" />
+        <option value="$PROJECT_DIR$/views/employment_add.html" />
         <option value="$PROJECT_DIR$/routers/router.go" />
+        <option value="$PROJECT_DIR$/views/employment_update.html" />
         <option value="$PROJECT_DIR$/controllers/employment.go" />
         <option value="$PROJECT_DIR$/models/employment.go" />
-        <option value="$PROJECT_DIR$/views/employments.html" />
       </list>
     </option>
   </component>
@@ -253,7 +237,7 @@
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/views/singleStudent" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/views" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -261,14 +245,14 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Go_WorkSpace\src\employmentInfo\views\singleStudent" />
-      <recent name="D:\Go_WorkSpace\src\employmentInfo\controllers" />
-      <recent name="D:\Go_WorkSpace\src\employmentInfo\views" />
-      <recent name="D:\Go_WorkSpace\src\employmentInfo\models" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Go_WorkSpace\src\employmentInfo\views\singleStudent" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Go_WorkSpace\src\employmentInfo\views" />
+      <recent name="D:\Go_WorkSpace\src\employmentInfo\views\singleStudent" />
+      <recent name="D:\Go_WorkSpace\src\employmentInfo\controllers" />
+      <recent name="D:\Go_WorkSpace\src\employmentInfo\models" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -296,7 +280,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49722221" visible="true" weight="0.27458397" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49722221" visible="true" weight="0.28366113" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50277776" side_tool="true" weight="0.22919819" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -309,7 +293,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3295082" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49848714" visible="true" weight="0.37540984" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49848714" visible="true" weight="0.38032788" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5015129" side_tool="true" weight="0.37540984" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -321,27 +305,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://D:/go/src/database/sql/sql.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="2933" column="16" selection-start-line="2933" selection-start-column="16" selection-end-line="2933" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/go/src/runtime/panic.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="521" selection-start-line="521" selection-end-line="521" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/student_add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-550">
-          <caret line="165" column="128" selection-start-line="165" selection-start-column="128" selection-end-line="165" selection-end-column="128" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/upload/2020/05/07/218b7b832fcee64eecc6b4b4d4c66294.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -416,20 +379,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-86">
           <caret line="94" column="26" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/admin_update.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="40" column="31" lean-forward="true" selection-start-line="40" selection-start-column="31" selection-end-line="40" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/go/src/github.com/astaxie/beego/controller.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="305" selection-start-line="305" selection-end-line="305" />
         </state>
       </provider>
     </entry>
@@ -509,23 +458,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/company.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-352">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-          <folding>
-            <element signature="e#16#98#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/offer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="172" column="14" selection-start-line="172" selection-start-column="14" selection-end-line="172" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/offer.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -552,13 +484,6 @@
           <folding>
             <element signature="e#21#98#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/offers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="44" column="22" selection-end-line="248" />
         </state>
       </provider>
     </entry>
@@ -604,13 +529,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/employment_add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="366" column="32" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/singleStudent/singleStudentInfo.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="482">
@@ -618,55 +536,123 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/singleStudent.go">
+    <entry file="file://$PROJECT_DIR$/static/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="46" column="21" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
+        <state relative-caret-position="9064">
+          <caret line="412" column="16" selection-start-line="412" selection-start-column="4" selection-end-line="412" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routers/router.go">
+    <entry file="file://$PROJECT_DIR$/controllers/singleStudent.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="63" column="59" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
+        <state relative-caret-position="572">
+          <caret line="33" column="15" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/go/src/github.com/astaxie/beego/controller.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4400">
+          <caret line="217" selection-start-line="217" selection-end-line="217" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/companys.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="127" column="33" lean-forward="true" selection-end-line="247" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/company.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="88" column="4" selection-start-line="88" selection-start-column="4" selection-end-line="99" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/employment.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/employment.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="31" column="44" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="44" />
-          <folding>
-            <element signature="e#21#113#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1936">
+          <caret line="129" column="51" lean-forward="true" selection-start-line="129" selection-start-column="51" selection-end-line="129" selection-end-column="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/employments.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="256" column="13" lean-forward="true" selection-start-line="256" selection-start-column="13" selection-end-line="256" selection-end-column="13" />
+        <state relative-caret-position="5808">
+          <caret line="285" selection-start-line="285" selection-end-line="285" />
+          <folding>
+            <element signature="n#style#0;n#a#0;n#td#7;n#tr#0;n#tbody#0;n#table#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/offers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="45" column="16" lean-forward="true" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/company.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="118" column="26" selection-start-line="118" selection-start-column="26" selection-end-line="118" selection-end-column="26" />
+          <folding>
+            <element signature="e#16#98#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/company.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="76" column="18" selection-start-line="76" selection-start-column="18" selection-end-line="76" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/admin_update.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3146">
+          <caret line="40" column="31" lean-forward="true" selection-start-line="40" selection-start-column="31" selection-end-line="40" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/employment_add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="534" column="25" lean-forward="true" selection-start-line="534" selection-start-column="25" selection-end-line="534" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routers/router.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="65" column="97" selection-start-line="65" selection-start-column="79" selection-end-line="65" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/company_update.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4158" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/employment_update.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="265" column="58" selection-start-line="265" selection-start-column="58" selection-end-line="265" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/offer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="172" column="14" selection-start-line="172" selection-start-column="14" selection-end-line="172" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/employment.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="335" column="14" selection-start-line="335" selection-start-column="14" selection-end-line="335" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/employment.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="46" column="32" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
+          <folding>
+            <element signature="e#21#113#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -21,22 +21,43 @@ func (c *EmploymentController) URLMapping() {
 	c.Mapping("GetSidEmployment", c.GetSidEmployment)
 	c.Mapping("GetAllCompanyNames", c.GetAllCompanyNames)
 	c.Mapping("UpdateEmployment", c.UpdateEmployment)
+	c.Mapping("EmploymentUpdating", c.EmploymentUpdating)
+
 
 
 }
+
+func (c *EmploymentController) EmploymentUpdating(){
+	Id := c.GetString("Id")
+	fmt.Println("Id的值为：",Id)
+
+	intid, _ := strconv.Atoi(Id)
+	//u := models.Employment{Id: int64(intid)}
+	u := models.Employment{Id: intid}
+	if err := c.ParseForm(&u); err != nil {
+		fmt.Println("这里的err",err)
+		c.Redirect("/updateEmployment?id="+Id , 302)
+	}
+	fmt.Println(u)
+	if err := models.UpdateEmploymentById(&u); err == nil {
+		c.Redirect("/getAllEmployments", 302)
+	}else{
+		c.Redirect("/updateEmployment?id="+Id , 302)
+	}
+	c.TplName="employments.html"
+	
+}
+
 //修改签约信息页面跳转
 func (c *EmploymentController) UpdateEmployment(){
 	id:=c.GetString("id")
-	fmt.Println("id:",id)
-	intid, _ := strconv.Atoi(id)
-	Employment,err:=models.GetEmploymentById(intid)
-
+	fmt.Println("要修改的签约记录的id为：",id)
+	e,err:=models.GetEmploymentById(id)
+	fmt.Println("e:",e)
 	if err!=nil{
 		fmt.Println(err)
 	}
-	fmt.Println("该单位的信息：",Company)
-	c.Data["list"]=Company
-	c.TplName="company_update.html"
+	c.Data["list"]=e
 	c.TplName="employment_update.html"
 }
 

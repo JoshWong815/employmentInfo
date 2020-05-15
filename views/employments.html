@@ -221,8 +221,11 @@
                                     <td class="text-center" >{{.Oname}}</td>
                                     <td class="text-center" >{{.Reason}}</td>
 
-                                    <td class="text-center" ><a href="/updateEmployment?id={{.Id}}" class="btn btn-info" id="UpdateButton">修改</a></td>
-                                    <td class="text-center" ><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>
+                                    <td class="text-center" ><a href="javascript:return false;" class="btn btn-info" style='color:gray;background-color:gray;border-color:gray'>修改</a></td>
+
+
+
+                                    <td class="text-center" align="center"><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>
                                 </tr>
                             {{end}}
 
@@ -250,16 +253,41 @@
             if (tab.rows[i].cells[2].innerText==="解约"||tab.rows[i].cells[2].innerText==="从未签约"){
 
                 console.log(tab.rows[i].cells[2].innerText);
-                //将删除按钮去掉
-                tab.rows[i].cells[7].style.display="none";
-                tab.rows[i].cells[8].style.colspan="2";
-                //tab.rows[i].cells[8].style.width="100%";
+                //将修改按钮去掉
+                tab.rows[i].cells[7].innerHTML="<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>"
+
+                // tab.rows[i].cells[7].onselectstart="return false"
+                // tab.rows[i].cells[7].onselect="document.selection.empty()"
+
+                //tab.rows[i].cells[8].colspan="2";
+                //tab.rows[i].cells[8].align="center"
             }
 
         }
 
         //加载页面时，只能修改操作类型是签约的记录，并且是最后一次签约的记录，即某个学生最新的签约记录
+        let tbl=document.getElementById("update")
+        $.ajax({
+                type:"get",
+                url:"getLastEmployed",
+                //data:data,
+                datatype:'json',
+                success:function(res){//res后台返回的数据
+                    console.log("res的值为：",res);
+                   // for(let j=0;j<tab.rows.length-1;j++) {
+                        for (let i = 0; i < res.length; i++) {
+                            console.log(res[i]);
+                            if (tab.rows[res[i].Id].cells[2].innerText === '签约') {
+                                let idjson=tab.rows[res[i].Id].cells[0].innerText
+                                tab.rows[res[i].Id].cells[7].innerHTML="<a href=\"/updateEmployment?id="+idjson+"\" class=\"btn btn-info\" >修改</a>"
+                            }
+                        }
+                  //  }
 
+
+                }
+            }
+        );
 
     }
 

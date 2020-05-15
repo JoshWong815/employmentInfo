@@ -21,6 +21,7 @@ func init() {
 	beego.Router("/studentEmployTheOffer", &controllers.SingleStudentController{},"*:StudentEmployTheOffer")
 	beego.Router("/singleStudentEmploymentAdding", &controllers.SingleStudentController{},"*:SingleStudentEmploymentAdding")
 	beego.Router("/getSidEmployed", &controllers.SingleStudentController{},"*:GetSidEmployed")
+	beego.Router("/getLastEmployed", &controllers.SingleStudentController{},"*:GetLastEmployed")
 
 
 
@@ -62,6 +63,7 @@ func init() {
 	beego.Router("/getSidEmployment", &controllers.EmploymentController{},"*:GetSidEmployment")
 	beego.Router("/getAllCompanyNames", &controllers.EmploymentController{},"*:GetAllCompanyNames")
 	beego.Router("/updateEmployment", &controllers.EmploymentController{},"*:UpdateEmployment")
+	beego.Router("/employmentUpdating", &controllers.EmploymentController{},"*:EmploymentUpdating")
 
 
 

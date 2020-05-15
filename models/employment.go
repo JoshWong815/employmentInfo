@@ -10,10 +10,10 @@ import (
 type Employment struct {
 	Id   int
 	Sid int
+	Operation string `orm:"size(128)"`
 	Employed  string `orm:"size(128)"`
 	Cname string  `orm:"size(128)"`
 	Oname string   `orm:"size(128)"`
-	Operation string `orm:"size(128)"`
 	Reason string `orm:"size(128)"`
 }
 var db MysqlDB
@@ -218,9 +218,9 @@ func InsertAnEmployment(e Employment,Cid,Oid int) error{
 	oid:=strconv.Itoa(Oid)
 	var sql string
 	if (Cid==0)&&(Oid==0){
-		sql="insert into employment(sid,operation,employed,cid,oid,reason) values("+sid+",'"+e.Operation+"','"+e.Employed+"',"+"null"+","+"null"+","+"'"+e.Reason+"')"
+		sql="insert into employment(sid,operation,employed,cid,oid,reason,time) values("+sid+",'"+e.Operation+"','"+e.Employed+"',"+"null"+","+"null"+","+"'"+e.Reason+"',current_timestamp())"
 	}else {
-		sql = "insert into employment(sid,operation,employed,cid,oid,reason) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + cid + "," + oid + "," + "'" + e.Reason + "')"
+		sql = "insert into employment(sid,operation,employed,cid,oid,reason,time) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + cid + "," + oid + "," + "'" + e.Reason + "',current_timestamp())"
 	}
 	fmt.Println(sql)
 	o:=orm.NewOrm()
@@ -297,6 +297,44 @@ func GetSidEmployment(sid string) (string,string,error){
     return employments[0].Cname,employments[0].Oname,nil
 }
 
-func GetEmploymentById(id int){
-	sql:="select * from"
+func GetEmploymentById(id string) (*Employment,error){
+	var e Employment
+
+	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason from employment e,company c, offer o where e.cid=c.id and e.oid= o.id and e.id="+id
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	err:=o.Raw(sql).QueryRow(&e)
+	if err!=nil{
+		fmt.Println(err)
+		return &e,err
+	}
+	fmt.Println("查询出来的这条记录为：",e)
+	return &e,err
+
 }
+
+func UpdateEmploymentById(e *Employment) error{
+	cid,err:=GetCidByCname(e.Cname)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	cidStr:=strconv.Itoa(cid)
+	oid,err:=GetOidByOname(e.Oname,cid)
+	oidStr:=strconv.Itoa(oid)
+	idStr:=strconv.Itoa(e.Id)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	sql:="update employment set cid="+cidStr+",oid="+oidStr+" where id="+idStr
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	res,err:=o.Raw(sql).Exec()
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("res的值为：",res)
+	return err
+}
+
+
+

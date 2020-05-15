@@ -27,6 +27,36 @@ c.Mapping("SingleStudentOffers",c.SingleStudentOffers)
 c.Mapping("StudentEmployTheOffer",c.StudentEmployTheOffer)
 c.Mapping("SingleStudentEmploymentAdding",c.SingleStudentEmploymentAdding)
 c.Mapping("GetSidEmployed",c.GetSidEmployed)
+c.Mapping("GetLastEmployed",c.GetLastEmployed)
+
+
+}
+//查看每位学生的最后一次操作
+func (c *SingleStudentController) GetLastEmployed(){
+	var maps []orm.Params
+	type IdAndSid struct {
+		Id string
+		Sid string
+	}
+	var IdAndSids []*IdAndSid
+	sql:="select substring_index(group_concat(id order by id desc),',',1) as id,sid,substring_index(group_concat(time order by time desc),',',1) as time from employment group by sid "
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	res,err:=o.Raw(sql).Values(&maps)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("res的值为：",res)
+	for i:=range maps{
+		var IdAndSid IdAndSid
+		map1:=maps[i]
+		IdAndSid.Id=map1["id"].(string)
+		IdAndSid.Sid=map1["sid"].(string)
+		fmt.Println("IdAndSid[",i,"]",":",IdAndSid)
+		IdAndSids=append(IdAndSids,&IdAndSid)
+	}
+	c.Data["json"]=IdAndSids
+	c.ServeJSON()
 }
 
 //检查该名学生是否签约了
