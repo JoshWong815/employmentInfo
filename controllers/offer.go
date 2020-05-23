@@ -22,87 +22,86 @@ func (c *OfferController) URLMapping() {
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
 	c.Mapping("ShowOffers", c.ShowOffers)
-	c.Mapping("UpdateOffer",c.UpdateOffer)
-	c.Mapping("OfferUpdating",c.OfferUpdating)
-	c.Mapping("DeleteOffer",c.DeleteOffer)
-	c.Mapping("AddOffer",c.AddOffer)
-	c.Mapping("OfferAdding",c.OfferAdding)
-	c.Mapping("GetAllCompanyInOffer",c.GetAllCompanyInOffer)
+	c.Mapping("UpdateOffer", c.UpdateOffer)
+	c.Mapping("OfferUpdating", c.OfferUpdating)
+	c.Mapping("DeleteOffer", c.DeleteOffer)
+	c.Mapping("AddOffer", c.AddOffer)
+	c.Mapping("OfferAdding", c.OfferAdding)
+	c.Mapping("GetAllCompanyInOffer", c.GetAllCompanyInOffer)
 
 }
-func (c *OfferController) GetAllCompanyInOffer(){
-	companys,_:=models.GetAllCompanyInOffer()
-	c.Data["json"]=companys
+func (c *OfferController) GetAllCompanyInOffer() {
+	companys, _ := models.GetAllCompanyInOffer()
+	c.Data["json"] = companys
 	c.ServeJSON()
 }
 
-func (c *OfferController) OfferAdding(){
+func (c *OfferController) OfferAdding() {
 	var e models.Offer
 	if err := c.ParseForm(&e); err != nil {
 		fmt.Println("转换model失败")
 		fmt.Println(err)
 	}
 	fmt.Println(e)
-	Cid,_:=models.GetCidByCname(e.Cname)
-	fmt.Println("Cid:",Cid)
-	err:=models.InsertAnOffer(e,Cid)
-	if err!=nil{
+	Cid, _ := models.GetCidByCname(e.Cname)
+	fmt.Println("Cid:", Cid)
+	err := models.InsertAnOffer(e, Cid)
+	if err != nil {
 		fmt.Println(err)
-	}else {
+	} else {
 		c.Redirect("/getAllOffers", 302)
 	}
 }
-func (c *OfferController) AddOffer(){
-	c.TplName="offer_add.html"
+func (c *OfferController) AddOffer() {
+	c.TplName = "offer_add.html"
 }
-func (c *OfferController) DeleteOffer(){
-	id:=c.GetString("id")
-	intid,_:=strconv.Atoi(id)
+func (c *OfferController) DeleteOffer() {
+	id := c.GetString("id")
+	intid, _ := strconv.Atoi(id)
 	if err := models.DeleteOffer(intid); err == nil {
 
-		c.Redirect("/getAllOffers",302)
+		c.Redirect("/getAllOffers", 302)
 	} else {
 		c.Ctx.WriteString("删除失败！")
-		c.Ctx.WriteString("id:"+id)
+		c.Ctx.WriteString("id:" + id)
 
 	}
 }
 func (c *OfferController) OfferUpdating() {
 	Id := c.GetString("Id")
-	fmt.Println("Id的值：",Id)
+	fmt.Println("Id的值：", Id)
 	intid, _ := strconv.Atoi(Id)
 	//u := models.Offer{Id: int64(intid)}
 	u := models.Offer{Id: intid}
 	if err := c.ParseForm(&u); err != nil {
-		fmt.Println("parse的错误为：",err)
-		c.Redirect("/updateOffer?id="+Id , 302)
+		fmt.Println("parse的错误为：", err)
+		c.Redirect("/updateOffer?id="+Id, 302)
 	}
 	fmt.Println(u)
 	if err := models.UpdateOfferById(&u); err == nil {
 		c.Redirect("/getAllOffers", 302)
-	}else{
-		c.Redirect("/updateOffer?id="+Id , 302)
+	} else {
+		c.Redirect("/updateOffer?id="+Id, 302)
 	}
-	c.TplName="offers.html"
+	c.TplName = "offers.html"
 }
 func (c *OfferController) ShowOffers() {
-	c.TplName="offers.html"
+	c.TplName = "offers.html"
 }
-func (c *OfferController) UpdateOffer(){
-	id:=c.GetString("id")
+func (c *OfferController) UpdateOffer() {
+	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
-	fmt.Println("id:",id)
+	fmt.Println("id:", id)
 	intid, _ := strconv.Atoi(id)
-	Offer,err:=models.GetOfferById(intid)
+	Offer, err := models.GetOfferById(intid)
 	//Offer,err:=models.GetOfferById(id)
-	if err!=nil{
+	if err != nil {
 		fmt.Println(err)
 	}
 	//fmt.Println("该名学生的信息：",Offer)
-	c.Data["list"]=Offer
-	c.TplName="offer_update.html"
+	c.Data["list"] = Offer
+	c.TplName = "offer_update.html"
 }
-
 
 // GetOne ...
 // @Title Get One
@@ -136,14 +135,14 @@ func (c *OfferController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *OfferController) GetAllOffers() {
-	c.Data["id"]=c.GetSession("id")
-	offers,err:=models.GetAllOffers()
-	if err!=nil{
-		c.Data["json"]=err
-	}else{
-		c.Data["json"]=offers
+	c.Data["id"] = c.GetSession("id")
+	offers, err := models.GetAllOffers()
+	if err != nil {
+		c.Data["json"] = err
+	} else {
+		c.Data["json"] = offers
 	}
-	c.TplName="offers.html"
+	c.TplName = "offers.html"
 
 }
 

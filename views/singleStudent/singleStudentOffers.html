@@ -30,7 +30,7 @@
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return getAllCompanysInOffer()">
 <div class="sidebar">
     <div class="menu-control toggle-sidebar">
         <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
@@ -69,6 +69,33 @@
                 </div>
             </a>
         </li>
+        <li class="submenu">
+            <a href="/studentEmployTheOffer">
+                <div>
+                    <i class="menu-icon fa fa-th-large"></i>
+                    <span class="menu-title">签约管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/singleStudentSkills">
+                <div>
+                    <i class="menu-icon fa fa-th-large"></i>
+                    <span class="menu-title">就业技能</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="submenu">
+            <a href="/singleStudentQuestions">
+                <div>
+                    <i class="menu-icon fa fa-th-large"></i>
+                    <span class="menu-title">就业答疑</span>
+                </div>
+            </a>
+        </li>
+
+
 
 
 
@@ -176,7 +203,7 @@
                 <div class="content-block">
                     <div class="block-title">岗位信息表</div>
                     <div class="block-content">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="tab">
                             <thead>
                             <tr>
 
@@ -204,6 +231,14 @@
 
 
                             </tbody>
+                            <div class="form-group">
+                                <p style="display: inline">请选择公司</p>
+
+                                <select  id="company" name=""  style="display: inline;" onchange="return chooseTheCompany(value)">
+                                    <option value="显示全部">显示全部</option>
+
+                                </select>
+                            </div>
                         </table>
                     </div>
                 </div>
@@ -215,7 +250,75 @@
 
 </body>
 
+<script>
+    function getAllCompanysInOffer() {
+        let company=document.getElementById("company");
 
+        $.ajax({
+            type: "get",
+            url: "getAllCompanysInOffer",
+            //data:data,
+            datatype: 'json',
+            success: function (data) {
+                console.log("data的值为：",data);
+                for (let i=0;i<data.length;i++){
+                    company.append(new Option(data[i],data[i]))
+                }
+            }
+            });
+    }
+
+
+    function chooseTheCompany(value) {
+        let tab=document.getElementById("tab")
+        if (value==="显示全部"){
+            console.log("sdadsa");
+            location.reload([true])
+        }else{
+            var rowNum=tab.rows.length;
+            for(let i=1;i<rowNum;i++){
+                tab.deleteRow(i);
+                rowNum=rowNum-1;
+                i=i-1
+            }
+            $.ajax({
+                type: "get",
+                url: "chooseTheCompanyInOffer?cname="+value,
+                //data:data,
+                datatype: 'json',
+                success: function (data) {
+                    console.log(data)
+                    for(let i=0;i<data.length;i++){
+                        var row = tab.insertRow(tab.rows.length);
+
+                        var c1 = row.insertCell(0);
+                        c1.innerHTML = data[i].Id;
+                        c1.className="text-center";
+                        c1.width="10%";
+
+                        var c2 = row.insertCell(1);
+                        c2.innerHTML = data[i].Name;
+                        c2.className="text-center";
+                        c2.width="10%";
+
+                        var c3 = row.insertCell(2);
+                        c3.innerHTML = data[i].Cname;
+                        c3.className="text-center";
+                        c3.width="10%";
+
+                        var c4 = row.insertCell(3);
+                        c4.innerHTML = data[i].Note;
+                        c4.className="text-center";
+                        c4.style="white-space:pre-line;text-align: left"
+                    }
+                }
+
+                });
+        }
+
+    }
+
+</script>
 
 
 

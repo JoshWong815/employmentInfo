@@ -45,7 +45,14 @@
                 </div>
             </a>
         </li>
-
+        <li class="submenu">
+            <a href="/getAllAdmins" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">管理员信息管理</span>
+                </div>
+            </a>
+        </li>
         <li class="submenu">
             <a href="/getAllStudents" >
                 <div>
@@ -85,6 +92,14 @@
                 <div>
                     <i class="menu-icon fa fa-table"></i>
                     <span class="menu-title">就业技能管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllQuestions" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">答疑管理</span>
                 </div>
             </a>
         </li>
@@ -225,11 +240,12 @@
 
 
 
-                                    <td class="text-center" align="center"><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>
+{{/*                                    <td class="text-center" align="center"><a href="/deleteEmployment?id={{.Id}}" class="btn btn-info" >删除</a></td>*/}}
                                 </tr>
                             {{end}}
 
                             <tr style="text-align:center;"><a href="/addEmployment" class="btn btn-primary" >添加</a></tr>
+                            <p style="display: inline;float: right"><input type="checkbox"  id="check" name="" value="" onchange="return everyStudentNewestEmployment()"/>仅显示每位学生最新的一条记录</p>
                             </tbody>
                         </table>
                     </div>
@@ -274,15 +290,18 @@
                 datatype:'json',
                 success:function(res){//res后台返回的数据
                     console.log("res的值为：",res);
-                   // for(let j=0;j<tab.rows.length-1;j++) {
-                        for (let i = 0; i < res.length; i++) {
-                            console.log(res[i]);
-                            if (tab.rows[res[i].Id].cells[2].innerText === '签约') {
-                                let idjson=tab.rows[res[i].Id].cells[0].innerText
-                                tab.rows[res[i].Id].cells[7].innerHTML="<a href=\"/updateEmployment?id="+idjson+"\" class=\"btn btn-info\" >修改</a>"
-                            }
+                    // for(let j=0;j<tab.rows.length-1;j++) {
+                    console.log("tab的长度：",tab.rows.length);
+                    for (let i = 0; i < res.length; i++) {
+                        console.log("res[i]",res[i]);
+
+                        if (tab.rows[res[i].Id].cells[2].innerText === '签约') {
+                            console.log(tab.rows[res[i].Id]);
+                            let idjson=tab.rows[res[i].Id].cells[0].innerText
+                            tab.rows[res[i].Id].cells[7].innerHTML="<a href=\"/updateEmployment?id="+idjson+"\" class=\"btn btn-info\" >修改</a>"
                         }
-                  //  }
+                    }
+                    //  }
 
 
                 }
@@ -290,6 +309,80 @@
         );
 
     }
+//仅显示每位学生最新的一条记录
+    function everyStudentNewestEmployment(){
+        let check=document.getElementById("check");
+        let tab=document.getElementById("tab");
+
+        if (check.checked===true){
+            console.log("选中了！");
+            var rowNum=tab.rows.length;
+            for(let i=1;i<rowNum;i++){
+                tab.deleteRow(i);
+                rowNum=rowNum-1;
+                i=i-1
+            }
+            $.ajax({
+                type: "get",
+                url: "everyStudentNewestEmployment",
+                //data:data,
+                datatype: 'json',
+                success: function (data) {
+                    console.log(data);
+                    for(let i=0;i<data.length;i++) {
+                        var row = tab.insertRow(tab.rows.length);
+                        var c1 = row.insertCell(0);
+                        c1.innerHTML = data[i].Id;
+                        c1.className = "text-center";
+
+                        var c2 = row.insertCell(1);
+                        c2.innerHTML = data[i].Sid;
+                        c2.className = "text-center";
+
+                        var c3 = row.insertCell(2);
+                        c3.innerHTML = data[i].Operation;
+                        c3.className = "text-center";
+
+                        var c4 = row.insertCell(3);
+                        c4.innerHTML = data[i].Employed;
+                        c4.className = "text-center";
+
+                        var c5= row.insertCell(4);
+                        c5.innerHTML = data[i].Cname;
+                        c5.className = "text-center";
+
+                        var c6= row.insertCell(5);
+                        c6.innerHTML = data[i].Oname;
+                        c6.className = "text-center";
+
+                        var c7= row.insertCell(6);
+                        c7.innerHTML = data[i].Reason;
+                        c7.className = "text-center";
+
+                        var c8= row.insertCell(7);
+                        if( c3.innerHTML==="解约"|| c3.innerHTML==="从未签约"){
+                            c8.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                            c8.className = "text-center";
+                        }else{
+                            c8.innerHTML = "<a href=\"/updateEmployment?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
+                            c8.className = "text-center";
+                        }
+
+
+                    }
+
+
+                }
+            });
+
+        }else if (check.checked===false){
+            console.log("没选中！");
+            location.reload([true])
+
+        }
+    }
+
+
 
 </script>
 

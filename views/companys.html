@@ -30,7 +30,7 @@
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return getAllCitys()">
 <div class="sidebar">
     <div class="menu-control toggle-sidebar">
         <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
@@ -95,6 +95,14 @@
                 <div>
                     <i class="menu-icon fa fa-table"></i>
                     <span class="menu-title">就业技能管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllQuestions" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">答疑管理</span>
                 </div>
             </a>
         </li>
@@ -203,12 +211,13 @@
                 <div class="content-block">
                     <div class="block-title">单位信息表</div>
                     <div class="block-content">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="tab">
                             <thead>
                             <tr>
 
                                 <th class="text-center">ID</th>
                                 <th class="text-center">单位名称</th>
+                                <th class="text-center">城市</th>
                                 <th class="text-center" style="text-align: left">单位概述</th>
                                 <th colspan="2" style="text-align:center;">操作</th>
                             </tr>
@@ -220,6 +229,7 @@
 
                                     <td class="text-center" width="10%">{{.Id}}</td>
                                     <td class="text-center" width="10%">{{.Name}}</td>
+                                    <td class="text-center" width="10%">{{.City}}</td>
                                     <td class="text-center" width="50%" style="white-space:pre-line;text-align: left">{{.Note}}</td>
 
                                     <td class="text-center" width="10%"><a href="/updateCompany?id={{.Id}}" class="btn btn-info" >修改</a></td>
@@ -228,6 +238,16 @@
                             {{end}}
 
                             <tr style="text-align:center;"><a href="/addCompany" class="btn btn-primary" >添加</a></tr>
+
+                            <div class="form-group">
+                                <p style="display: inline">请选择城市</p>
+
+                                <select  id="citys" name=""  style="display: inline;" onchange="return thisCitysCompany(value)">
+                                    <option value="显示全部">显示全部</option>
+
+                                </select>
+                            </div>
+
                             </tbody>
                         </table>
                     </div>
@@ -242,6 +262,86 @@
 
 
 
+<script>
 
+    function getAllCitys() {
+
+        let citys=document.getElementById("citys");
+        $.ajax({
+            type: "get",
+            url: "getAllCitys",
+            //data:data,
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                for(let i=0;i<data.length;i++){
+                    citys.append(new Option(data[i],data[i]))
+                }
+
+            }
+        });
+
+    }
+
+    function thisCitysCompany(value) {
+        let tab = document.getElementById("tab")
+        if (value === "显示全部") {
+            console.log("sdadsa");
+            location.reload([true])
+
+        }else{
+            var rowNum=tab.rows.length;
+            for(let i=1;i<rowNum;i++){
+                tab.deleteRow(i);
+                rowNum=rowNum-1;
+                i=i-1
+            }
+            $.ajax({
+                type: "get",
+                url: "getThisCitysCompany?city="+value,
+                //data:data,
+                datatype: 'json',
+                success: function (res) {
+                    console.log(res);
+                    for(let i=0;i<res.length;i++){
+                    var row = tab.insertRow(tab.rows.length);
+
+                    var c1 = row.insertCell(0);
+                    c1.innerHTML = res[i].Id;
+                    c1.className="text-center";
+                    c1.width="10%";
+
+                    var c2 = row.insertCell(1);
+                    c2.innerHTML = res[i].Name;
+                    c2.className="text-center";
+                    c2.width="10%";
+
+                    var c3 = row.insertCell(2);
+                    c3.innerHTML = res[i].City;
+                    c3.className="text-center";
+                    c3.width="10%";
+
+                    var c4 = row.insertCell(3);
+                    c4.innerHTML = res[i].Note;
+                    c4.className="text-center";
+                    c4.style="white-space:pre-line;text-align: left";
+                    c4.width="50%";
+
+                        var c5 = row.insertCell(4);
+                        c5.innerHTML ="<a href=\"/updateCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
+                        c5.className="text-center";
+                        c5.width="10%";
+
+                        var c6 = row.insertCell(5);
+                        c6.innerHTML ="<a href=\"/deleteCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >删除</a>";
+                        c6.className="text-center";
+                        c6.width="10%";
+                    }
+                    }
+                    });
+                    }
+                    }
+
+</script>
 
 </html>

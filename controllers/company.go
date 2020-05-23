@@ -25,14 +25,14 @@ func (c *CompanyController) URLMapping() {
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
 	c.Mapping("ShowCompanys", c.ShowCompanys)
-	c.Mapping("UpdateCompany",c.UpdateCompany)
-	c.Mapping("CompanyUpdating",c.CompanyUpdating)
-	c.Mapping("DeleteCompany",c.DeleteCompany)
-	c.Mapping("AddCompany",c.AddCompany)
-	c.Mapping("CompanyAdding",c.CompanyAdding)
+	c.Mapping("UpdateCompany", c.UpdateCompany)
+	c.Mapping("CompanyUpdating", c.CompanyUpdating)
+	c.Mapping("DeleteCompany", c.DeleteCompany)
+	c.Mapping("AddCompany", c.AddCompany)
+	c.Mapping("CompanyAdding", c.CompanyAdding)
 
 }
-func (c *CompanyController) CompanyAdding(){
+func (c *CompanyController) CompanyAdding() {
 	var s models.Company
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
@@ -42,63 +42,64 @@ func (c *CompanyController) CompanyAdding(){
 	id, err := models.AddCompany(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllCompanys", 302)
-	} else if err!=nil{
+	} else if err != nil {
 		fmt.Println("第二次err添加失败")
 		//c.Ctx.WriteString("第二次err添加失败")
 		fmt.Println(err)
 	}
-	c.Redirect("/getAllCompanys",302)
+	c.Redirect("/getAllCompanys", 302)
 }
-func (c *CompanyController) AddCompany(){
-	c.TplName="company_add.html"
+func (c *CompanyController) AddCompany() {
+	c.TplName = "company_add.html"
 }
-func (c *CompanyController) DeleteCompany(){
-	id:=c.GetString("id")
-	intid,_:=strconv.Atoi(id)
+func (c *CompanyController) DeleteCompany() {
+	id := c.GetString("id")
+	intid, _ := strconv.Atoi(id)
 	if err := models.DeleteCompany(intid); err == nil {
 
-		c.Redirect("/getAllCompanys",302)
+		c.Redirect("/getAllCompanys", 302)
 	} else {
 		c.Ctx.WriteString("删除失败！")
-		c.Ctx.WriteString("id:"+id)
+		c.Ctx.WriteString("id:" + id)
 
 	}
 }
 func (c *CompanyController) CompanyUpdating() {
 	Id := c.GetString("Id")
-	fmt.Println("Id的值：",Id)
+	fmt.Println("Id的值：", Id)
 	intid, _ := strconv.Atoi(Id)
 	//u := models.Company{Id: int64(intid)}
 	u := models.Company{Id: intid}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
-		c.Redirect("/updateCompany?id="+Id , 302)
+		c.Redirect("/updateCompany?id="+Id, 302)
 	}
 	fmt.Println(u)
 	if err := models.UpdateCompanyById(&u); err == nil {
 		c.Redirect("/getAllCompanys", 302)
-	}else{
-		c.Redirect("/updateCompany?id="+Id , 302)
+	} else {
+		c.Redirect("/updateCompany?id="+Id, 302)
 	}
-	c.TplName="companys.html"
+	c.TplName = "companys.html"
 }
 func (c *CompanyController) ShowCompanys() {
-	c.TplName="companys.html"
+	c.TplName = "companys.html"
 }
-func (c *CompanyController) UpdateCompany(){
-	id:=c.GetString("id")
+func (c *CompanyController) UpdateCompany() {
+	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
-	fmt.Println("id:",id)
+	fmt.Println("id:", id)
 	intid, _ := strconv.Atoi(id)
-	Company,err:=models.GetCompanyById(intid)
+	Company, err := models.GetCompanyById(intid)
 	//Company,err:=models.GetCompanyById(id)
-	if err!=nil{
+	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("该单位的信息：",Company)
-	c.Data["list"]=Company
-	c.TplName="company_update.html"
+	fmt.Println("该单位的信息：", Company)
+	c.Data["list"] = Company
+	c.TplName = "company_update.html"
 }
+
 // Post ...
 // @Title Post
 // @Description create Company
@@ -150,7 +151,7 @@ func (c *CompanyController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *CompanyController) GetAllCompanys() {
-	c.Data["id"]=c.GetSession("id")
+	c.Data["id"] = c.GetSession("id")
 	var fields []string
 	var sortby []string
 	var order []string
@@ -200,7 +201,7 @@ func (c *CompanyController) GetAllCompanys() {
 	}
 
 	//c.ServeJSON()
-	c.TplName="companys.html"
+	c.TplName = "companys.html"
 
 }
 

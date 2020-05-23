@@ -11,10 +11,8 @@ import (
 
 type Admin struct {
 	Id       string `orm:"size(128);pk"`
-	Password     string `orm:"size(128)"`
+	Password string `orm:"size(128)"`
 	Name     string `orm:"size(128)"`
-
-
 }
 
 func init() {

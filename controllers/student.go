@@ -7,9 +7,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/360EntSecGroup-Skylar/excelize"
 	"math/rand"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -18,7 +20,6 @@ import (
 type StudentController struct {
 	//beego.Controller
 	MainController
-
 }
 
 // URLMapping ...
@@ -29,58 +30,106 @@ func (c *StudentController) URLMapping() {
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
 	c.Mapping("ShowStudents", c.ShowStudents)
-	c.Mapping("UpdateStudent",c.UpdateStudent)
-	c.Mapping("StudentUpdating",c.StudentUpdating)
-	c.Mapping("DeleteStudent",c.DeleteStudent)
-	c.Mapping("AddStudent",c.AddStudent)
-	c.Mapping("StudentAdding",c.StudentAdding)
-	c.Mapping("FileUpload",c.FileUpload)
-
+	c.Mapping("UpdateStudent", c.UpdateStudent)
+	c.Mapping("StudentUpdating", c.StudentUpdating)
+	c.Mapping("DeleteStudent", c.DeleteStudent)
+	c.Mapping("AddStudent", c.AddStudent)
+	c.Mapping("StudentAdding", c.StudentAdding)
+	c.Mapping("FileUpload", c.FileUpload)
+	//c.Mapping("Excel",c.Excel)
 }
 
-func (c *StudentController) FileUpload(){
+func Excel(fpath string) {
+	var students []models.Student
+	f, err := excelize.OpenFile(fpath)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	// 获取工作表中指定单元格的值
+	cell, err := f.GetCellValue("Sheet1", "B2")
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	fmt.Println(cell)
+	// 获取 Sheet1 上所有单元格
+	rows, err := f.GetRows("Sheet1")
+	fmt.Println("rows的长度：", len(rows))
+	for j := 1; j < len(rows); j++ {
+		row := rows[j]
+		var s models.Student
+		s.Id = row[0]
+		s.Password = row[1]
+		s.Name = row[2]
+		s.Sex = row[3]
+		ageStr, _ := strconv.Atoi(row[4])
+		s.Age = ageStr
+		students = append(students, s)
+		//下面这个循环只是展示
+		for i, _ := range row {
+			fmt.Print(row[i], "\t")
+		}
+		fmt.Println()
 
-	f, h, _ := c.GetFile("myfile")//获取上传的文件
+	}
+	fmt.Println("从excel中读取的要添加到student表中的数据为:", students)
+	for i := range students {
+		_, err := models.AddStudent(&students[i])
+		if err != nil {
+			fmt.Println("添加到数据库中时的err:", err)
+			//if err==orm.ErrMissPK
+		}
+
+	}
+	//c.Redirect("/getAllStudents",302)
+}
+
+func (c *StudentController) FileUpload() {
+
+	f, h, _ := c.GetFile("myfile") //获取上传的文件
 	ext := path.Ext(h.Filename)
 	//验证后缀名是否符合要求
 	var AllowExtMap map[string]bool = map[string]bool{
-		".jpg":true,
-		".jpeg":true,
-		".png":true,
+		".jpg":  true,
+		".jpeg": true,
+		".png":  true,
+		".xlsx": true,
 	}
-	if _,ok:=AllowExtMap[ext];!ok{
-		c.Ctx.WriteString( "后缀名不符合上传要求" )
+	if _, ok := AllowExtMap[ext]; !ok {
+		c.Ctx.WriteString("后缀名不符合上传要求")
 		return
 	}
 	//创建目录
 	uploadDir := "static/upload/" + time.Now().Format("2006/01/02/")
-	err := os.MkdirAll( uploadDir , 777)
+	err := os.MkdirAll(uploadDir, 777)
 	if err != nil {
-		c.Ctx.WriteString( fmt.Sprintf("%v",err) )
+		c.Ctx.WriteString(fmt.Sprintf("%v", err))
 		return
 	}
 	//构造文件名称
 	rand.Seed(time.Now().UnixNano())
-	randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000 )
-	hashName := md5.Sum( []byte( time.Now().Format("2006_01_02_15_04_05_") + randNum ) )
+	randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000)
+	hashName := md5.Sum([]byte(time.Now().Format("2006_01_02_15_04_05_") + randNum))
 
-	fileName := fmt.Sprintf("%x",hashName) + ext
+	fileName := fmt.Sprintf("%x", hashName) + ext
 	//c.Ctx.WriteString(  fileName )
 
 	fpath := uploadDir + fileName
-	defer f.Close()//关闭上传的文件，不然的话会出现临时文件不能清除的情况
+	defer f.Close() //关闭上传的文件，不然的话会出现临时文件不能清除的情况
 	err = c.SaveToFile("myfile", fpath)
 	if err != nil {
-		c.Ctx.WriteString( fmt.Sprintf("%v",err) )
+		c.Ctx.WriteString(fmt.Sprintf("%v", err))
 	}
 	//c.Ctx.WriteString( "上传成功~！！！！！！！" )
 	fmt.Println("上传成功")
-	c.Redirect("/getAllStudents",302)
-	c.TplName="students.html"
+	Excel(fpath)
+	c.Redirect("/getAllStudents", 302)
+	c.TplName = "students.html"
 }
 
-func (c *StudentController) StudentAdding(){
-	c.Data["id"]=c.GetSession("id")
+func (c *StudentController) StudentAdding() {
+	c.Data["id"] = c.GetSession("id")
 	var s models.Student
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
@@ -90,65 +139,66 @@ func (c *StudentController) StudentAdding(){
 	id, err := models.AddStudent(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllStudents", 302)
-	} else if err!=nil{
+	} else if err != nil {
 		fmt.Println("第二次err添加失败")
 		//c.Ctx.WriteString("第二次err添加失败")
 		fmt.Println(err)
 	}
-	c.Redirect("/getAllStudents",302)
+	c.Redirect("/getAllStudents", 302)
 }
-func (c *StudentController) AddStudent(){
-	c.Data["id"]=c.GetSession("id")
-	c.TplName="student_add.html"
+func (c *StudentController) AddStudent() {
+	c.Data["id"] = c.GetSession("id")
+	c.TplName = "student_add.html"
 }
-func (c *StudentController) DeleteStudent(){
-	id:=c.GetString("id")
+func (c *StudentController) DeleteStudent() {
+	id := c.GetString("id")
 	//intid,_:=strconv.ParseInt(id,0,64)
 	if err := models.DeleteStudent(id); err == nil {
 
-		c.Redirect("/getAllStudents",302)
+		c.Redirect("/getAllStudents", 302)
 	} else {
 		c.Ctx.WriteString("删除失败！")
-		c.Ctx.WriteString("id:"+id)
+		c.Ctx.WriteString("id:" + id)
 
 	}
 }
 func (c *StudentController) StudentUpdating() {
 	Id := c.GetString("Id")
-	fmt.Println("Id的值：",Id)
+	fmt.Println("Id的值：", Id)
 	//intid, _ := strconv.Atoi(Id)
 	//u := models.Student{Id: int64(intid)}
 	u := models.Student{Id: Id}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
-		c.Redirect("/updateStudent?id="+Id , 302)
+		c.Redirect("/updateStudent?id="+Id, 302)
 	}
 	fmt.Println(u)
 	if err := models.UpdateStudentById(&u); err == nil {
 		c.Redirect("/getAllStudents", 302)
-	}else{
-		c.Redirect("/updateStudent?id="+Id , 302)
+	} else {
+		c.Redirect("/updateStudent?id="+Id, 302)
 	}
-		c.TplName="students.html"
+	c.TplName = "students.html"
 }
 func (c *StudentController) ShowStudents() {
-	c.TplName="students.html"
+	c.TplName = "students.html"
 }
-func (c *StudentController) UpdateStudent(){
-	id:=c.GetString("id")
+func (c *StudentController) UpdateStudent() {
+	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
 	//fmt.Println("id:",id)
 	//fmt.Println("id:",id)
 	//intid, _ := strconv.Atoi(id)
 	//student,err:=models.GetStudentById(int64(intid))
-	student,err:=models.GetStudentById(id)
-	if err!=nil{
+	student, err := models.GetStudentById(id)
+	if err != nil {
 		fmt.Println(err)
 	}
 	//fmt.Println("该名学生的信息：",student)
-    c.Data["list"]=student
-    c.TplName="student_update.html"
+	c.Data["list"] = student
+	c.TplName = "student_update.html"
 }
+
 // Post ...
 // @Title Post
 // @Description create Student
@@ -252,7 +302,7 @@ func (c *StudentController) GetAllStudents() {
 	}
 
 	//c.ServeJSON()
-	c.TplName="students.html"
+	c.TplName = "students.html"
 
 }
 

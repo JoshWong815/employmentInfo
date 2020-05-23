@@ -25,14 +25,15 @@ func (c *SkillController) URLMapping() {
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
 	c.Mapping("ShowSkills", c.ShowSkills)
-	c.Mapping("UpdateSkill",c.UpdateSkill)
-	c.Mapping("SkillUpdating",c.SkillUpdating)
-	c.Mapping("DeleteSkill",c.DeleteSkill)
-	c.Mapping("AddSkill",c.AddSkill)
-	c.Mapping("SkillAdding",c.SkillAdding)
+	c.Mapping("UpdateSkill", c.UpdateSkill)
+	c.Mapping("SkillUpdating", c.SkillUpdating)
+	c.Mapping("DeleteSkill", c.DeleteSkill)
+	c.Mapping("AddSkill", c.AddSkill)
+	c.Mapping("SkillAdding", c.SkillAdding)
 
 }
-func (c *SkillController) SkillAdding(){
+
+func (c *SkillController) SkillAdding() {
 	var s models.Skill
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
@@ -42,63 +43,64 @@ func (c *SkillController) SkillAdding(){
 	id, err := models.AddSkill(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllSkills", 302)
-	} else if err!=nil{
+	} else if err != nil {
 		fmt.Println("第二次err添加失败")
 		//c.Ctx.WriteString("第二次err添加失败")
 		fmt.Println(err)
 	}
-	c.Redirect("/getAllSkills",302)
+	c.Redirect("/getAllSkills", 302)
 }
-func (c *SkillController) AddSkill(){
-	c.TplName="skill_add.html"
+func (c *SkillController) AddSkill() {
+	c.TplName = "skill_add.html"
 }
-func (c *SkillController) DeleteSkill(){
-	id:=c.GetString("id")
-	intid,_:=strconv.ParseInt(id,0,64)
+func (c *SkillController) DeleteSkill() {
+	id := c.GetString("id")
+	intid, _ := strconv.ParseInt(id, 0, 64)
 	if err := models.DeleteSkill(intid); err == nil {
 
-		c.Redirect("/getAllSkills",302)
+		c.Redirect("/getAllSkills", 302)
 	} else {
 		c.Ctx.WriteString("删除失败！")
-		c.Ctx.WriteString("id:"+id)
+		c.Ctx.WriteString("id:" + id)
 
 	}
 }
 func (c *SkillController) SkillUpdating() {
 	Id := c.GetString("Id")
-	fmt.Println("Id的值：",Id)
+	fmt.Println("Id的值：", Id)
 	intid, _ := strconv.Atoi(Id)
 	//u := models.Skill{Id: int64(intid)}
 	u := models.Skill{Id: int64(intid)}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
-		c.Redirect("/updateSkill?id="+Id , 302)
+		c.Redirect("/updateSkill?id="+Id, 302)
 	}
 	fmt.Println(u)
 	if err := models.UpdateSkillById(&u); err == nil {
 		c.Redirect("/getAllSkills", 302)
-	}else{
-		c.Redirect("/updateSkill?id="+Id , 302)
+	} else {
+		c.Redirect("/updateSkill?id="+Id, 302)
 	}
-	c.TplName="skills.html"
+	c.TplName = "skills.html"
 }
 func (c *SkillController) ShowSkills() {
-	c.TplName="skills.html"
+	c.TplName = "skills.html"
 }
-func (c *SkillController) UpdateSkill(){
-	id:=c.GetString("id")
+func (c *SkillController) UpdateSkill() {
+	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
-	fmt.Println("id:",id)
+	fmt.Println("id:", id)
 	intid, _ := strconv.Atoi(id)
-	Skill,err:=models.GetSkillById(int64(intid))
+	Skill, err := models.GetSkillById(int64(intid))
 	//Skill,err:=models.GetSkillById(id)
-	if err!=nil{
+	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("该单位的信息：",Skill)
-	c.Data["list"]=Skill
-	c.TplName="skill_update.html"
+	fmt.Println("该单位的信息：", Skill)
+	c.Data["list"] = Skill
+	c.TplName = "skill_update.html"
 }
+
 // Post ...
 // @Title Post
 // @Description create Skill
@@ -150,7 +152,7 @@ func (c *SkillController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *SkillController) GetAllSkills() {
-	c.Data["id"]=c.GetSession("id")
+	c.Data["id"] = c.GetSession("id")
 	var fields []string
 	var sortby []string
 	var order []string
@@ -200,7 +202,7 @@ func (c *SkillController) GetAllSkills() {
 	}
 
 	//c.ServeJSON()
-	c.TplName="skills.html"
+	c.TplName = "skills.html"
 
 }
 

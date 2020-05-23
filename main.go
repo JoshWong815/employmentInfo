@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	orm.RegisterDataBase("default","mysql","root:daomei,815@tcp(127.0.0.1:3306)/employmentinfo?charset=utf8")
+	orm.RegisterDataBase("default", "mysql", "root:daomei,815@tcp(127.0.0.1:3306)/employmentinfo?charset=utf8")
 	beego.Run()
 }
-

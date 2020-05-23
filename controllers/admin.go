@@ -1,7 +1,5 @@
 package controllers
 
-
-
 import "C"
 import (
 	"employmentInfo/models"
@@ -15,7 +13,6 @@ import (
 type AdminController struct {
 	//beego.Controller
 	MainController
-
 }
 
 // URLMapping ...
@@ -26,19 +23,16 @@ func (c *AdminController) URLMapping() {
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
 	c.Mapping("ShowAdmins", c.ShowAdmins)
-	c.Mapping("UpdateAdmin",c.UpdateAdmin)
-	c.Mapping("AdminUpdating",c.AdminUpdating)
-	c.Mapping("DeleteAdmin",c.DeleteAdmin)
-	c.Mapping("AddAdmin",c.AddAdmin)
-	c.Mapping("AdminAdding",c.AdminAdding)
-
+	c.Mapping("UpdateAdmin", c.UpdateAdmin)
+	c.Mapping("AdminUpdating", c.AdminUpdating)
+	c.Mapping("DeleteAdmin", c.DeleteAdmin)
+	c.Mapping("AddAdmin", c.AddAdmin)
+	c.Mapping("AdminAdding", c.AdminAdding)
 
 }
 
-
-
-func (c *AdminController) AdminAdding(){
-	c.Data["id"]=c.GetSession("id")
+func (c *AdminController) AdminAdding() {
+	c.Data["id"] = c.GetSession("id")
 	var s models.Admin
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
@@ -48,65 +42,66 @@ func (c *AdminController) AdminAdding(){
 	id, err := models.AddAdmin(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllAdmins", 302)
-	} else if err!=nil{
+	} else if err != nil {
 		fmt.Println("第二次err添加失败")
 		//c.Ctx.WriteString("第二次err添加失败")
 		fmt.Println(err)
 	}
-	c.Redirect("/getAllAdmins",302)
+	c.Redirect("/getAllAdmins", 302)
 }
-func (c *AdminController) AddAdmin(){
-	c.Data["id"]=c.GetSession("id")
-	c.TplName="admin_add.html"
+func (c *AdminController) AddAdmin() {
+	c.Data["id"] = c.GetSession("id")
+	c.TplName = "admin_add.html"
 }
-func (c *AdminController) DeleteAdmin(){
-	id:=c.GetString("id")
+func (c *AdminController) DeleteAdmin() {
+	id := c.GetString("id")
 	//intid,_:=strconv.ParseInt(id,0,64)
 	if err := models.DeleteAdmin(id); err == nil {
 
-		c.Redirect("/getAllAdmins",302)
+		c.Redirect("/getAllAdmins", 302)
 	} else {
 		c.Ctx.WriteString("删除失败！")
-		c.Ctx.WriteString("id:"+id)
+		c.Ctx.WriteString("id:" + id)
 
 	}
 }
 func (c *AdminController) AdminUpdating() {
 	Id := c.GetString("Id")
-	fmt.Println("Id的值：",Id)
+	fmt.Println("Id的值：", Id)
 	//intid, _ := strconv.Atoi(Id)
 	//u := models.Admin{Id: int64(intid)}
 	u := models.Admin{Id: Id}
 	if err := c.ParseForm(&u); err != nil {
 		fmt.Println(err)
-		c.Redirect("/updateAdmin?id="+Id , 302)
+		c.Redirect("/updateAdmin?id="+Id, 302)
 	}
 	fmt.Println(u)
 	if err := models.UpdateAdminById(&u); err == nil {
 		c.Redirect("/getAllAdmins", 302)
-	}else{
-		c.Redirect("/updateAdmin?id="+Id , 302)
+	} else {
+		c.Redirect("/updateAdmin?id="+Id, 302)
 	}
-	c.TplName="admins.html"
+	c.TplName = "admins.html"
 }
 func (c *AdminController) ShowAdmins() {
-	c.TplName="admins.html"
+	c.TplName = "admins.html"
 }
-func (c *AdminController) UpdateAdmin(){
-	id:=c.GetString("id")
+func (c *AdminController) UpdateAdmin() {
+	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
-	fmt.Println("id:",id)
-	fmt.Println("id:",id)
+	fmt.Println("id:", id)
+	fmt.Println("id:", id)
 	//intid, _ := strconv.Atoi(id)
 	//Admin,err:=models.GetAdminById(int64(intid))
-	Admin,err:=models.GetAdminById(id)
-	if err!=nil{
+	Admin, err := models.GetAdminById(id)
+	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("该名学生的信息：",Admin)
-	c.Data["list"]=Admin
-	c.TplName="admin_update.html"
+	fmt.Println("该名学生的信息：", Admin)
+	c.Data["list"] = Admin
+	c.TplName = "admin_update.html"
 }
+
 // Post ...
 // @Title Post
 // @Description create Admin
@@ -210,7 +205,7 @@ func (c *AdminController) GetAllAdmins() {
 	}
 
 	//c.ServeJSON()
-	c.TplName="admin.html"
+	c.TplName = "admin.html"
 
 }
 

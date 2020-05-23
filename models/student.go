@@ -11,15 +11,26 @@ import (
 
 type Student struct {
 	Id       string `orm:"size(128);pk"`
-	Password     string `orm:"size(128)"`
+	Password string `orm:"size(128)"`
 	Name     string `orm:"size(128)"`
 	Sex      string `orm:"size(128)"`
 	Age      int
-
 }
 
 func init() {
 	orm.RegisterModel(new(Student))
+}
+func GetSidBySname(sname string) (int, error) {
+	var aid *int
+	sql := "select id from student where name=" + sname
+	fmt.Println(sql)
+	o := orm.NewOrm()
+	err := o.Raw(sql).QueryRow(&aid)
+	if err != nil {
+		fmt.Println("通过student的name查询id失败：", err)
+		return 0, err
+	}
+	return *aid, err
 }
 
 // AddStudent insert a new Student into database and returns

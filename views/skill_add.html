@@ -31,7 +31,7 @@
       var type=type.value;
 
       var info= document.getElementById('Info');
-      var info=info.value;
+      //var infoText=info.innerText;
 
              if (!id){  //如果用户没有输入就业技能id
                  alert('请输入就业技能id！');
@@ -43,10 +43,11 @@
       }
         
 
-       if(!info){ //如果用户没有输入就业技能描述
+       if(info.innerText===""){ //如果用户没有输入就业技能描述
           alert('请输入就业技能描述！');
           return false;
       }
+      // alert(info.innerText)
 
      
       return true;
@@ -192,17 +193,24 @@
                         <form class="form-horizontal" action="/skillAdding" method="post" onsubmit="return check()">
                             <div class="block-content">
 
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-3 control-label">就业技能id</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="就业技能Id">
-                                    </div>
-                                </div>
+{{/*                                <div class="form-group">*/}}
+{{/*                                    <label for="inputPassword3" class="col-sm-3 control-label">就业技能id</label>*/}}
+{{/*                                    <div class="col-sm-9">*/}}
+{{/*                                        <input type="text" class="form-control" id="Id" name="Id" placeholder="就业技能Id">*/}}
+{{/*                                    </div>*/}}
+{{/*                                </div>*/}}
 
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">就业技能类型</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Type" name="Type" placeholder="就业技能类型">
+
+                                        <select class="form-control" id="Type" name="Type">
+                                            <option>面试</option>
+                                            <option>笔试</option>
+                                            <option>签约</option>
+                                            <option>解约</option>
+                                            <option>实习</option>
+                                        </select>
                                     </div>
                                 </div>
                                 

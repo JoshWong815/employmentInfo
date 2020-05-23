@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>添加答疑记录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/awesome-bootstrap-checkbox.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
+
+    <script type="text/javascript" src="/static/js/jquery-2.1.3.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+
+    <script type="text/javascript">
+         function check(){
+
+
+      var Sid= document.getElementById('Sid');
+      var Sid=Sid.value;
+
+      var Operation= document.getElementById('Operation');
+      var Operation=Operation.value;
+    console.log("Operation的值为：",Operation)
+      var Employed= document.getElementById('Employed');
+      var Employed=Employed.value;
+
+      var Cname= document.getElementById('Cname');
+      var Cname=Cname.value;
+
+      var Reason= document.getElementById('Reason');
+      var Reason=Reason.value;
+
+             var Oname= document.getElementById('Oname');
+             var Oname=Oname.value;
+             if (!Sid){  //如果用户没有输入学号
+                 alert('请输入学号！');
+                 return false;
+             }
+
+             if (!Operation){  //如果用户没有选择操作类型
+                 alert('请选择操作类型！');
+                 return false;
+             }
+            if(Operation=='解约') {
+                if (!Reason) {  //如果用户没有填写解约理由
+                    alert('请填写解约理由！');
+                    return false;
+                }
+            }
+
+             if (Operation==="从未签约"){
+
+                 return true;
+             }else if (Operation==="签约"){
+
+                 if (!Employed) {  //如果用户没有选择是否签约
+                     alert('请选择是否签约');
+                     return false;
+                 }
+
+
+                 if (!Cname) {  //如果用户没有选择签约公司
+                     alert('请选择签约公司！');
+                     return false;
+                 }
+
+                 if (!Oname) {  //如果用户没有选择签约offer
+                     alert('请选择签约offer！');
+                     return false;
+                 }
+             }
+
+
+
+     
+      return true;
+   }
+
+    </script>
+</head>
+
+<body class="flat-blue sidebar-collapse">
+    <div class="sidebar">
+        <div class="menu-control toggle-sidebar">
+            <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
+            <i class="fa fa-bars navicon"></i>
+        </div>
+        <ul class="menu">
+                        <li class="submenu">
+                <a href="/index">
+                    <div>
+                        <i class="menu-icon fa fa-th-large"></i>
+                        <span class="menu-title">主页</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="submenu">
+                <a href="/getAllEmployments">
+                    <div>
+                        <i class="menu-icon fa fa-table"></i>
+                        <span class="menu-title">签约信息表</span>
+                    </div>
+                </a>
+            </li>
+            <li class="submenu">
+                <a href="/addEmployment" class="active">
+                    <div>
+                        <i class="menu-icon fa fa-file-text-o"></i>
+                        <span class="menu-title">添加签约信息</span>
+                    </div>
+                </a>
+            </li>
+
+
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="content-container">
+        <nav class="navbar navbar-default">
+            <div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>签约信息管理</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa fa-comments"></i> 0</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-title-bar">
+                                    Notification ( 0 )
+                                </li>
+                                <li class="message">
+                                    No new notification
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown notification-alert">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-exclamation-circle"></i> 3</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-title-bar">
+                                    Notification ( 3 )
+                                </li>
+                                <li>
+                                    <ul class="notification-list">
+                                        <li>
+                                            <a href="#">
+                                                <div class="noti-icon noti-alert">
+                                                    <i class="fa fa-exclamation-circle fa-2x"></i>
+                                                </div>
+                                                <div class="noti-message">1 new registration</div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="noti-icon noti-success">
+                                                    <i class="fa fa-check fa-2x"></i>
+                                                </div>
+                                                <div class="noti-message">3 new orders</div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <div class="noti-icon noti-primary">
+                                                    <i class="fa fa-comments fa-2x"></i>
+                                                </div>
+                                                <div class="noti-message">2 customers messages</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.id}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu user-info">
+                                <li class="dropdown-title-bar">
+                                    <img src="/static/images/profile.jpg" class="profile-img">
+                                </li>
+                                <li>
+                                    <div class="navbar-login">
+                                        <h4 class="user-name">{{.id}}</h4>
+                                        <p>815486582@qq.com</p>
+                                        <div class="btn-group margin-bottom-2x" role="group">
+                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">Profile</a></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">Logout</a></button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="content-block">
+                        <div class="block-title">添加签约信息</div>
+                        <form class="form-horizontal" action="/employmentAdding" method="post" onsubmit="return check()">
+                            <div class="block-content">
+
+
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" id="forma" class="col-sm-3 control-label">学号</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="Sid" name="Sid" placeholder="学号" onblur="return checkSid()" onchange="return clearForm()">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">操作类型</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="Operation" name="Operation" onclick="return whenOperationChanged(value)">
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">是否签约</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="Employed" name="Employed">
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">签约公司</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="Cname" name="Cname" onclick="return getCompanysOffer(value)">
+{{/*                                            <option value="">--请选择签约公司名称--</option>*/}}
+{{/*                                            {{range .companys}}*/}}
+{{/*                                            <option value="{{.Name}}">{{.Name}}</option>*/}}
+{{/*                                            {{end}}*/}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">签约岗位</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="Oname" name="Oname" >
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">解约原因</label>
+                                    <div class="col-sm-9">
+                                        <input type="hidden" class="form-control" id="Reason" name="Reason" placeholder="如果选择解约请填写此项">
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+                            </div>
+                            <div class="block-footer">
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+
+                                        <input type="submit" class="btn btn-primary" >
+                                        <!--
+                                        <a href="/post" class="btn btn-primary" >提交</a>
+                                        -->
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+               
+</body>
+<script>
+    function refresh() {
+        location.reload([true])
+    }
+
+    
+    function getCompanysOffer(value) {
+        //第一条语句是为了解决如果用户选择了一个公司，下面的岗位列表显示出该公司的岗位，然后又选了另一个公司，但原来那个公司的岗位还在的问题
+        $("#Oname").find("option").remove();
+        $.ajax({
+            type:"POST",
+            url:"getNowCompany?cname="+value,
+            //data:data,
+            datatype:'json',
+            success:function(res){//res后台返回的数据
+                console.log("res的值为：",res);
+                $.each(res, function(index, item) {
+                    $("#Oname").append( //此处向select中循环绑定数据
+                        "<option value="+item.Name+">" + item.Name+ "</option>");
+                });
+            }
+        }
+    );
+    }
+
+
+    function whenOperationChanged(value) {
+       // var options=$('#Employed option:selected'); //获取选中的项
+        let Sid = document.getElementById("Sid");
+        let Reason = document.getElementById("Reason");
+        let Employed = document.getElementById("Employed");
+        let Oname = document.getElementById("Oname");
+        let Cname = document.getElementById("Cname");
+        //最开始使用options.text()而不是value，好使，过了一会不好使了，所以换成了
+        if(value==="解约"){
+            Cname.style.display="inline"
+            Oname.style.display="inline"
+           // Employed.value="否"
+           Employed.options.remove("是")
+            Reason.type = "text"
+            Employed.options.add(new Option("否","否"))
+            Cname.onclick="null"
+
+            $.ajax({
+                    type:"POST",
+                    url:"getSidEmployment?sid="+Sid.value,
+                    //data:data,
+                    datatype:'json',
+                    success:function(res){//res后台返回的数据
+                        //alert(res)
+                        console.log(res);
+                        var c=res.Cname
+                        var o=res.Oname
+                        console.log(c,o)
+                        Cname.options.length=0
+                        Oname.options.length=0
+                        Cname.options.add(new Option(c,c))
+                        Oname.options.add(new Option(o,o))
+                    }
+                }
+            );
+
+
+        }if (value==="签约" ){
+            Cname.style.display="inline"
+            Oname.style.display="inline"
+            Reason.type = "hidden"
+           // Employed.value="是"
+           Employed.options.remove("否")
+            Employed.options.add(new Option("是","是"))
+        }if (value===""){
+            Cname.style.display="inline"
+            Oname.style.display="inline"
+            Reason.type = "hidden"
+            // Employed.value="是"
+            Employed.options.remove("是")
+            Employed.options.add(new Option("否","否"))
+        }
+        if (value==="从未签约"){
+
+            Reason.type = "hidden";
+            // Employed.value="是"
+            Employed.options.remove("是");
+            Employed.options.add(new Option("否","否"));
+            Oname.options.length=0;
+            Cname.options.length=0;
+            Cname.style.display="none";
+            Oname.style.display="none";
+
+        }
+    }
+
+
+
+    //给Sid框绑定一个失去焦点事件,失去焦点之后及校验该学生是否已经签约
+   function checkSid() {
+
+        //取到用户填写的值
+       let sid = document.getElementById("Sid");
+      // alert(sid.value)
+       console.log("sid的值为：",sid.value)
+       let sidValue=sid.value
+        //var sid = $(this).val();
+
+        //发请求
+        $.ajax({
+            url:"checkSid?sid="+sidValue,
+            type: "post",
+            //data:sidValue,
+
+            success:function (data) {
+                console.log("data的值为：",data)
+                if(data==='employed'){
+                alert("该学生已经签约！只能进行解约操作！")
+                    //$("#id_username").next().text(data.msg).parent().parent().addClass("has-error");
+                    let Operation = document.getElementById("Operation");
+                    // Operation.options.remove(1);
+                    // Operation.options.remove(3);
+                    Operation.options.add(new Option("解约","解约"))
+                   // Operation.options.length=0;
+                    //Operation.options.remove(1);
+
+                    //Operation.options.add(new Option("--请选择解约--", "",true,true))
+                    // let Reason = document.getElementById("Reason");
+                    // if (Reason.value===""){
+                    //     alert("请填写解约原因")
+                    //
+                    // }
+
+
+                }else if(data==='unemployed'){
+
+                    $.ajax({
+                        url:"getAllCompanyNames",
+                        type: "get",
+                        //data:sidValue,
+
+                        success:function (data) {
+                            console.log(data);
+                            let Cname = document.getElementById("Cname");
+                            //console.log("data.value:",data.value)
+                            for (i=0;i<data.length;i++){
+                                Cname.options.add(new Option(data[i].Name, data[i].Name));
+                            }
+                        }
+                        });
+
+
+
+                    var Operation = document.getElementById("Operation");
+                    Operation.options.add(new Option("签约", "签约"))
+                    //Operation.options.add(new Option("从未签约", "从未签约"))
+                   // Operation.options.length=0;
+                    // var op = Operation.options;
+                    // console.log(op);
+                    // var no1 = Operation.options[1].value;
+                    // console.log("no1:",no1);
+                    // var f1=0;
+
+                    // for(i=0;i<4;i++){
+                    //     console.log("tt",Operation.options[i].value,"pp");
+                    //     if (Operation.options[i].value==="签约")
+                    //        f1=1
+                    // }
+                    //     if (f1===0) {
+                    //         Operation.options.add(new Option("签约", "签约"))
+                    //     }
+
+
+
+                } else if (data==='neverBothEmployOrNever'){
+
+                    $.ajax({
+                        url:"getAllCompanyNames",
+                        type: "get",
+                        //data:sidValue,
+
+                        success:function (data) {
+                            console.log(data);
+                            let Cname = document.getElementById("Cname");
+                            //console.log("data.value:",data.value)
+                            for (i=0;i<data.length;i++){
+                                Cname.options.add(new Option(data[i].Name, data[i].Name));
+                            }
+                        }
+                    });
+
+                    var Operation = document.getElementById("Operation");
+                    Operation.options.add(new Option("签约", "签约"))
+                    Operation.options.add(new Option("从未签约", "从未签约"))
+
+                }
+                else if (data==='neverOnlyEmploy'){
+
+                    $.ajax({
+                        url:"getAllCompanyNames",
+                        type: "get",
+                        //data:sidValue,
+
+                        success:function (data) {
+                            console.log(data);
+                            let Cname = document.getElementById("Cname");
+                            //console.log("data.value:",data.value)
+                            for (i=0;i<data.length;i++){
+                                Cname.options.add(new Option(data[i].Name, data[i].Name));
+                            }
+                        }
+                    });
+
+                    var Operation = document.getElementById("Operation");
+
+                    Operation.options.add(new Option("签约", "签约"))
+                }
+
+
+            }
+
+        })
+   }
+
+   function clearForm() {
+       let Operation = document.getElementById("Operation")
+       let Employed = document.getElementById("Employed");
+       let Oname = document.getElementById("Oname");
+      let Cname = document.getElementById("Cname");
+       let Reason = document.getElementById("Reason");
+
+       Operation.options.length=0;
+       Employed.options.length=0;
+       Oname.options.length=0;
+      Cname.options.length=0;
+      Reason.value=""
+   }
+
+
+
+</script>
+</html>

@@ -28,6 +28,9 @@
       var name= document.getElementById('Name');
       var name=name.value;
 
+             var city= document.getElementById('City');
+             var city=city.value;
+
       var note= document.getElementById('Note');
       var note=note.value;
 
@@ -35,9 +38,15 @@
           alert('请输入单位名称！');
           return false;
       }
-        
 
-       if(!note){ //如果用户没有输入单位描述
+             if (!city){  //如果用户没有输入城市
+                 alert('请输入所在城市！');
+                 return false;
+             }
+
+
+
+             if(!note){ //如果用户没有输入单位描述
           alert('请输入单位描述！');
           return false;
       }
@@ -205,6 +214,15 @@
                                     <div class="col-sm-9">
 
                                             <input type="text" class="form-control" id="Name" name="Name" value="{{.list.Name}}">
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label" >所在城市</label>
+                                    <div class="col-sm-9">
+
+                                        <input type="text" class="form-control" id="City" name="City" value="{{.list.City}}">
 
                                     </div>
                                 </div>
