@@ -81,7 +81,7 @@
         </li>
 
         <li class="submenu">
-            <a href="/getAllEmployments">
+            <a href="/showAllEmployments">
                 <div>
                     <i class="menu-icon fa fa-table"></i>
                     <span class="menu-title">签约信息管理</span>
@@ -247,6 +247,15 @@
                                 </select>
                             </div>
 
+                            <div class="form-group" >
+                                <form class="form-horizontal" action="/mohuSelectOffers" method="post" >
+                                <input type="text" class="form-control" id="Id" name="Id" placeholder="请输入岗位Id">
+                                <input type="text" class="form-control" id="Name" name="Name" placeholder="请输入岗位名称">
+                                    <input style="display: none" type="text" class="form-control" id="companyInMohu" name="Company" value="">
+                                <input type="submit" class="btn btn-primary" >
+                                </form>
+                            </div>
+
                             </tbody>
                         </table>
                     </div>
@@ -279,7 +288,7 @@
 
 
     function chooseTheCompany(value) {
-        let tab=document.getElementById("tab")
+        let tab=document.getElementById("tab");
         if (value==="显示全部"){
             console.log("sdadsa");
             location.reload([true])
@@ -318,7 +327,7 @@
                         var c4 = row.insertCell(3);
                         c4.innerHTML = data[i].Note;
                         c4.className="text-center";
-                        c4.style="white-space:pre-line;text-align: left"
+                        c4.style="white-space:pre-line;text-align: left";
 
                         var c5 = row.insertCell(4);
                         c5.innerHTML = "<a href=\"/updateOffer?id="+ c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
@@ -335,6 +344,12 @@
 
             });
         }
+            let companyInMohu=document.getElementById("companyInMohu")
+            companyInMohu.value=company.value
+    }
+
+    function mohuSelectOffers() {
+
 
     }
 

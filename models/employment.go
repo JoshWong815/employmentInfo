@@ -15,6 +15,7 @@ type Employment struct {
 	Cname     string `orm:"size(128)"`
 	Oname     string `orm:"size(128)"`
 	Reason    string `orm:"size(128)"`
+	Mark 	  string `orm:"size(128)"`
 }
 
 var db MysqlDB
@@ -60,7 +61,7 @@ func GetAllEmployments() ([]*Employment, error) {
 	var maps []orm.Params
 	var employments []*Employment
 	o := orm.NewOrm()
-	sql := "select e.id id,sid,operation,employed,c.name cname,o.name oname,reason from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id"
+	sql := "select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id"
 	a, err := o.Raw(sql).Values(&maps)
 	fmt.Println("a:", a)
 	if err != nil {
@@ -101,6 +102,14 @@ func GetAllEmployments() ([]*Employment, error) {
 			employment.Reason = reason
 		} else {
 			employment.Reason = ""
+		}
+
+		//对是否是最新记录进行断言
+		mark, ok := map1["mark"].(string)
+		if ok {
+			employment.Mark = mark
+		} else {
+			employment.Mark = ""
 		}
 
 		employments = append(employments, &employment)
@@ -218,13 +227,25 @@ func InsertAnEmployment(e Employment, Cid, Oid int) error {
 	oid := strconv.Itoa(Oid)
 	var sql string
 	if (Cid == 0) && (Oid == 0) {
-		sql = "insert into employment(sid,operation,employed,cid,oid,reason,time) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + "null" + "," + "null" + "," + "'" + e.Reason + "',current_timestamp())"
+		sql = "insert into employment(sid,operation,employed,cid,oid,reason,time,mark) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + "null" + "," + "null" + "," + "'" + e.Reason + "',current_timestamp(),'是')"
 	} else {
-		sql = "insert into employment(sid,operation,employed,cid,oid,reason,time) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + cid + "," + oid + "," + "'" + e.Reason + "',current_timestamp())"
+		sql = "insert into employment(sid,operation,employed,cid,oid,reason,time,mark) values(" + sid + ",'" + e.Operation + "','" + e.Employed + "'," + cid + "," + oid + "," + "'" + e.Reason + "',current_timestamp(),'是')"
 	}
 	fmt.Println(sql)
+	//先执行sql0的目的是把该名学生当前最新的一条记录的mark值设为否
+	sql0:="update employment set mark='否' where sid="+sid+" and id=(select id from(select id from employment e where sid="+sid+" ORDER BY id desc limit 1) a)"
+	fmt.Println(sql0)
 	o := orm.NewOrm()
+	res0, err0 := o.Raw(sql0).Exec()
 	res, err := o.Raw(sql).Exec()
+	if err0 == nil {
+		num, _ := res0.RowsAffected()
+		fmt.Println("mysql row affected nums: ", num)
+		fmt.Println("res0:", res0)
+	} else {
+		fmt.Print(err0)
+		return err0
+	}
 	if err == nil {
 		num, _ := res.RowsAffected()
 		fmt.Println("mysql row affected nums: ", num)
@@ -268,7 +289,7 @@ func CheckSid(sid string) (string, error) {
 	if res-res2 == 0 && res3 == 0 {
 		return "neverBothEmployOrNever", nil
 	}
-	//签约的记录总数减去解约的记录总数，如果等于0，并且从未签约过，说明该名学生从未签约过，只能进行签约
+	//签约的记录总数减去解约的记录总数，如果等于0，并且已经有了一条从未签约过的记录，说明该名学生从未签约过，并记录了从未签约，只能进行签约
 	if res-res2 == 0 && res3 == 1 {
 		return "neverOnlyEmploy", nil
 	}
@@ -334,4 +355,34 @@ func UpdateEmploymentById(e *Employment) error {
 	}
 	fmt.Println("res的值为：", res)
 	return err
+}
+//查询每位学生最新的一条记录
+func EveryStudentNewestEmployment()([]*Employment){
+	var e []*Employment
+	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id where e.mark='是'"
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	n,err:=o.Raw(sql).QueryRows(&e)
+	if err!=nil{
+		fmt.Println("查询每位学生最新的一条记录时出错：",err)
+	}
+
+	fmt.Println("n:",n)
+	fmt.Println("e:",e)
+	//for i:=range e{
+	//	map1:=e[i]
+	//	fmt.Println(map1)
+	//	idStr:=strconv.Itoa(map1.Id)
+	//	map1,err=GetEmploymentById(idStr)
+	//	if err!=nil{
+	//		fmt.Println("根据id获得最新的记录时出错：",err)
+	//	}
+	//	fmt.Println("完整的map1记录：",map1)
+	//	e[i]=map1
+	//}
+	//fmt.Println("e:",e)
+	for i:=range e{
+		fmt.Println(e[i])
+	}
+	return e
 }

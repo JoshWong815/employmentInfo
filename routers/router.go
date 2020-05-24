@@ -11,6 +11,10 @@ func init() {
 	beego.Router("/loginTest", &controllers.MainController{}, "*:LoginTest")
 	beego.Router("/logout", &controllers.MainController{}, "*:Logout")
 	beego.Router("/index", &controllers.MainController{}, "*:Index")
+	beego.Router("/getMainEchartOfCompanyCity", &controllers.MainController{}, "*:GetMainEchartOfCompanyCity")
+	beego.Router("/getMainEchartOfCompanyType", &controllers.MainController{}, "*:GetMainEchartOfCompanyType")
+
+
 
 	beego.Router("/studentMainPage", &controllers.SingleStudentController{}, "*:StudentMainPage")
 	beego.Router("/singleStudentInfo", &controllers.SingleStudentController{}, "*:SingleStudentInfo")
@@ -57,7 +61,10 @@ func init() {
 	beego.Router("/addOffer", &controllers.OfferController{}, "*:AddOffer")
 	beego.Router("/offerAdding", &controllers.OfferController{}, "*:OfferAdding")
 	beego.Router("/getAllCompanyInOffer", &controllers.OfferController{}, "get:GetAllCompanyInOffer")
+	beego.Router("/mohuSelectOffers", &controllers.OfferController{}, "*:MohuSelectOffers")
 
+
+	beego.Router("/showAllEmployments", &controllers.EmploymentController{}, "*:ShowAllEmployments")
 	beego.Router("/getAllEmployments", &controllers.EmploymentController{}, "get:GetAllEmployments")
 	//beego.Router("/updateEmployments", &controllers.EmploymentController{},"*:UpdateEmployment")
 	beego.Router("/deleteEmployment", &controllers.EmploymentController{}, "get:DeleteEmployment")

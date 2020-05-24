@@ -5,13 +5,13 @@ import (
 	"employmentInfo/models"
 	"encoding/json"
 	"fmt"
-	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 	"strconv"
 )
 
 //  OfferController operations for Offer
 type OfferController struct {
-	beego.Controller
+	MainController
 }
 
 // URLMapping ...
@@ -28,8 +28,37 @@ func (c *OfferController) URLMapping() {
 	c.Mapping("AddOffer", c.AddOffer)
 	c.Mapping("OfferAdding", c.OfferAdding)
 	c.Mapping("GetAllCompanyInOffer", c.GetAllCompanyInOffer)
+	c.Mapping("MohuSelectOffers", c.MohuSelectOffers)
+
 
 }
+//模糊查询offers
+func (c *OfferController) MohuSelectOffers(){
+	id:=c.GetString("Id")
+	name:=c.GetString("Name")
+	company:=c.GetString("Company")
+	fmt.Println("id:",id,"\nname:",name,"\ncompany:",company)
+	sql:="select o.id id,o.name name,c.name cname,o.note note from offer o,company c where o.id like '%"+id+"%' and o.name like '%"+name+"%' and o.cid=c.id and c.name like '%"+company+"%'"
+	fmt.Println(sql)
+	var m []*models.Offer
+	o:=orm.NewOrm()
+	n,err:=o.Raw(sql).QueryRows(&m)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("n:",n)
+	fmt.Println("m:",m)
+	for i:=range m{
+		fmt.Println(m[i])
+	}
+	c.Data["json"]=m
+	//c.ServeJSON()
+	c.Data["id"]=c.GetSession("id")
+	c.SessionTest()
+
+	c.TplName="offers.html"
+}
+
 func (c *OfferController) GetAllCompanyInOffer() {
 	companys, _ := models.GetAllCompanyInOffer()
 	c.Data["json"] = companys
@@ -136,6 +165,7 @@ func (c *OfferController) GetOne() {
 // @router / [get]
 func (c *OfferController) GetAllOffers() {
 	c.Data["id"] = c.GetSession("id")
+	c.SessionTest()
 	offers, err := models.GetAllOffers()
 	if err != nil {
 		c.Data["json"] = err
@@ -143,6 +173,7 @@ func (c *OfferController) GetAllOffers() {
 		c.Data["json"] = offers
 	}
 	c.TplName = "offers.html"
+	//c.ServeJSON()
 
 }
 

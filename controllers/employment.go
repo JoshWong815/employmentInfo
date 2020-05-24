@@ -4,16 +4,17 @@ import "C"
 import (
 	"employmentInfo/models"
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"strconv"
 )
 
 type EmploymentController struct {
-	beego.Controller
+	MainController
 }
 
 func (c *EmploymentController) URLMapping() {
+
+	c.Mapping("ShowAllEmployments", c.ShowAllEmployments)
 	c.Mapping("GetAllEmployments", c.GetAllEmployments)
 	c.Mapping("DeleteEmployment", c.DeleteEmployment)
 	//c.Mapping("UpdateEmployment", c.UpdateEmployment)
@@ -30,34 +31,16 @@ func (c *EmploymentController) URLMapping() {
 
 
 }
+func (c *EmploymentController) ShowAllEmployments(){
+	fmt.Println("sadasdasfasfasf")
+	c.Data["id"]=c.GetSession("id")
+	c.SessionTest()
+	c.TplName="employments.html"
+}
+
 //查询每位学生最新的一条记录
 func (c *EmploymentController) EveryStudentNewestEmployment(){
-	var e []*models.Employment
-	sql:="select substring_index(group_concat(id order by id desc),',',1) as id,sid,substring_index(group_concat(time order by time desc),',',1) as time from employment group by sid"
-	fmt.Println(sql)
-	o:=orm.NewOrm()
-	n,err:=o.Raw(sql).QueryRows(&e)
-	if err!=nil{
-		fmt.Println("查询每位学生最新的一条记录时出错：",err)
-	}
-	fmt.Println("n:",n)
-	fmt.Println("e:",e)
-	for i:=range e{
-		map1:=e[i]
-		fmt.Println(map1)
-		idStr:=strconv.Itoa(map1.Id)
-		map1,err=models.GetEmploymentById(idStr)
-		if err!=nil{
-			fmt.Println("根据id获得最新的记录时出错：",err)
-		}
-		fmt.Println("完整的map1记录：",map1)
-		e[i]=map1
-	}
-	fmt.Println("e:",e)
-	for i:=range e{
-		fmt.Println(e[i])
-	}
-
+	e:=models.EveryStudentNewestEmployment()
 	c.Data["json"]=e
 	c.ServeJSON()
 }
@@ -104,7 +87,7 @@ func (c *EmploymentController) EmploymentUpdating() {
 	}
 	fmt.Println(u)
 	if err := models.UpdateEmploymentById(&u); err == nil {
-		c.Redirect("/getAllEmployments", 302)
+		c.Redirect("/showAllEmployments", 302)
 	} else {
 		c.Redirect("/updateEmployment?id="+Id, 302)
 	}
@@ -178,7 +161,7 @@ func (c *EmploymentController) EmploymentAdding() {
 	if err != nil {
 		return
 	} else {
-		c.Redirect("/getAllEmployments", 302)
+		c.Redirect("/showAllEmployments", 302)
 	}
 }
 
@@ -238,7 +221,7 @@ func (c *EmploymentController) GetAllEmployments() {
 		c.Data["json"] = employments
 	}
 	c.TplName = "employments.html"
-
+	c.ServeJSON()
 }
 
 func (c *EmploymentController) DeleteEmployment() {

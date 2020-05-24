@@ -83,7 +83,7 @@
         </li>
 
         <li class="submenu">
-            <a href="/getAllEmployments" >
+            <a href="/showAllEmployments" >
                 <div>
                     <i class="menu-icon fa fa-table"></i>
                     <span class="menu-title">签约信息管理</span>
@@ -218,6 +218,7 @@
                                 <th class="text-center">ID</th>
                                 <th class="text-center">单位名称</th>
                                 <th class="text-center">城市</th>
+                                <th class="text-center">单位类型</th>
                                 <th class="text-center" style="text-align: left">单位概述</th>
                                 <th colspan="2" style="text-align:center;">操作</th>
                             </tr>
@@ -230,7 +231,8 @@
                                     <td class="text-center" width="10%">{{.Id}}</td>
                                     <td class="text-center" width="10%">{{.Name}}</td>
                                     <td class="text-center" width="10%">{{.City}}</td>
-                                    <td class="text-center" width="50%" style="white-space:pre-line;text-align: left">{{.Note}}</td>
+                                    <td class="text-center" width="10%">{{.Type}}</td>
+                                    <td class="text-center" width="40%" style="white-space:pre-line;text-align: left">{{.Note}}</td>
 
                                     <td class="text-center" width="10%"><a href="/updateCompany?id={{.Id}}" class="btn btn-info" >修改</a></td>
                                     <td class="text-center"  width="10%"><a href="/deleteCompany?id={{.Id}}" class="btn btn-info" >删除</a></td>
@@ -321,21 +323,26 @@
                     c3.className="text-center";
                     c3.width="10%";
 
-                    var c4 = row.insertCell(3);
-                    c4.innerHTML = res[i].Note;
-                    c4.className="text-center";
-                    c4.style="white-space:pre-line;text-align: left";
-                    c4.width="50%";
+                        var c4 = row.insertCell(3);
+                        c4.innerHTML = res[i].Type;
+                        c4.className="text-center";
+                        c4.width="10%";
 
-                        var c5 = row.insertCell(4);
-                        c5.innerHTML ="<a href=\"/updateCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
-                        c5.className="text-center";
-                        c5.width="10%";
+                    var c5 = row.insertCell(4);
+                    c5.innerHTML = res[i].Note;
+                    c5.className="text-center";
+                    c5.style="white-space:pre-line;text-align: left";
+                    c5.width="40%";
 
                         var c6 = row.insertCell(5);
-                        c6.innerHTML ="<a href=\"/deleteCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >删除</a>";
+                        c6.innerHTML ="<a href=\"/updateCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
                         c6.className="text-center";
                         c6.width="10%";
+
+                        var c7 = row.insertCell(6);
+                        c7.innerHTML ="<a href=\"/deleteCompany?id="+c1.innerHTML+"\" class=\"btn btn-info\" >删除</a>";
+                        c7.className="text-center";
+                        c7.width="10%";
                     }
                     }
                     });

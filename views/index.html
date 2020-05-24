@@ -23,6 +23,8 @@
     <script type="text/javascript" src="/static/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="/static/js/main.js"></script>
     <script type="text/javascript" src="/static/js/index.js"></script>
+    <script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
 </head>
 
 <body class="flat-blue sidebar-collapse">
@@ -75,7 +77,7 @@
                 </a>
             </li>
             <li class="submenu">
-                <a href="/getAllEmployments">
+                <a href="/showAllEmployments">
                     <div>
                         <i class="menu-icon fa fa-table"></i>
                         <span class="menu-title">签约信息管理</span>
@@ -210,137 +212,76 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="banner-block white">
-                        <div class="block-content">
-                            <div class="block-title">Orders</div>
-                            <canvas id="dashboard-order-chart" style="padding:10px 30px 10px 10px;"></canvas>
-                        </div>
-                    </div>
+
+                {{/*                学生签约城市的饼状图的容器*/}}
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div id="city" style="width: 600px;height:400px;display: inline"></div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="banner-block white">
-                        <div class="block-content">
-                            <div class="block-title">技能自我评价</div>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <canvas id="dashboard-stat-chart" style="padding:10px 30px 10px 10px;"></canvas>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div id="dashboard-stat-chart-legend" class="pie-legend"></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                {{/*                学生签约单位性质的饼状图的容器*/}}
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div id="type" style="width: 600px;height:400px;display: inline"></div>
                 </div>
             </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-comments-o"></i>个人介绍</h3>
-                        </div>
-                        <div class="panel-body no-padding">
-                            <ul class="message-list">
-                                <a href="#">
-                                    <li>
-                                        <img src="/static/images/profile.jpg" class="profile-img pull-left">
-                                        <div class="message-block">
 
-                                            <div class="message">软件工程专业2020届毕业，有过Golang、安卓APP前端、JSP、JAVA开发经验。曾参加“齐鲁软件设计大赛”获得三等奖。
-                                            </div>
-                                        </div>
 
-                                    </li>
-                                </a>
-                                <a href="#">
-                                    <li>
-                                        <img src="/static/images/profile.jpg" class="profile-img pull-left">
-                                        <div class="message-block">
 
-                                            <div class="message">Golang、JAVA、mysql、beego、OracleDBA、JSP、C++、HTML、CSS、Javascript等都学习过，目前正在重点学习Go语
-                                                言相关的知识</div>
-                                        </div>
-                                    </li>
-                                </a>
-                                <a href="#">
-                                    <li>
-                                        <img src="/static/images/profile.jpg" class="profile-img pull-left">
-                                        <div class="message-block">
 
-                                            <div class="message">具备良好的沟通能力，有较强的文字综合和表达能力。
-                                                具有团队协作精神，能够承受工作压力，执行力高，追求效率，可塑性强</div>
-                                        </div>
-                                    </li>
-                                </a>
-
-                                <a href="#" id="message-load-more">
-                                    <li class="text-center load-more">
-                                        <i class="fa fa-refresh"></i> load more..
-                                    </li>
-                                </a>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-users"></i> New Users</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Username</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <footer class="footer">
             <span><i class="fa fa-copyright"></i> Tui2Tone Labs, 2015 / More Templates <a href="/index" target="_blank" title="">我的主页</a> </span>
     </footer>
+
+
+
 </body>
+
+<script type="text/javascript">
+
+//学生签约城市的饼状图
+    // 基于准备好的dom，初始化echarts实例
+    var myChart1 = echarts.init(document.getElementById('city'));
+    myChart1.showLoading();  // 开启 loading 效果
+    $.get('getMainEchartOfCompanyCity', function (data) {
+        myChart1.hideLoading();  // 隐藏 loading 效果
+        console.log(data);
+        myChart1.setOption({
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',    // 设置图表类型为饼图
+                    radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+                    data: data         // 数据数组，name 为数据项名称，value 为数据项值
+
+
+
+                }
+            ]
+        })
+    },'json');
+
+
+    //学生签约公司类型的饼状图
+var myChart2 = echarts.init(document.getElementById('type'));
+myChart2.showLoading();  // 开启 loading 效果
+$.get('getMainEchartOfCompanyType', function (data) {
+    myChart2.hideLoading();  // 隐藏 loading 效果
+    console.log(data);
+    myChart2.setOption({
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',    // 设置图表类型为饼图
+                radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+                data: data         // 数据数组，name 为数据项名称，value 为数据项值
+
+
+
+            }
+        ]
+    })
+},'json')
+</script>
 
 </html>

@@ -59,7 +59,7 @@
 
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return getAllTypeOfCompany()">
     <div class="sidebar">
         <div class="menu-control toggle-sidebar">
             <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i> Flat Admin</a>
@@ -227,6 +227,17 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label" >单位类型</label>
+                                    <div class="col-sm-9">
+
+                                        <select type="text" class="form-control" id="Type" name="Type" >
+                                            <option value="{{.list.Type}}">{{.list.Type}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
                                   <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">描述</label>
                                     <div class="col-sm-9">
@@ -254,5 +265,22 @@
                 </div>
                 
 </body>
+<script>
+    function getAllTypeOfCompany() {
+        let type=document.getElementById("Type");
+        let valueOfType=type.value;
+        var allTypes=new Array();
+        allTypes[0]="民企";
+        allTypes[1]="国企";
+        allTypes[2]="外企";
+        console.log(allTypes);
+        for (let i=0;i<=2;i++){
+            if(valueOfType!==allTypes[i]){
+                type.options.add(new Option(allTypes[i],allTypes[i]))
+            }
+        }
+
+    }
+</script>
 
 </html>

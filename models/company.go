@@ -13,6 +13,7 @@ type Company struct {
 	Id   int
 	Name string `orm:"size(128)"`
 	City string `orm:"size(128)"`
+	Type string `orm:"size(128)"`
 	Note string `orm:"size(128)"`
 }
 
