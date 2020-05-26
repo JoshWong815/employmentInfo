@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>审批信息管理</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/awesome-bootstrap-checkbox.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
+
+    <script type="text/javascript" src="/static/js/jquery-2.1.3.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/static/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body class="flat-blue sidebar-collapse" onload="return onload()">
+<div class="sidebar">
+    <div class="menu-control toggle-sidebar">
+        <a class="navbar-brand" href="#" style="font-size: 15px"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
+        <i class="fa fa-bars navicon"></i>
+    </div>
+    <ul class="menu">
+        <li class="submenu">
+            <a href="/index">
+                <div>
+                    <i class="menu-icon fa fa-th-large"></i>
+                    <span class="menu-title">主页</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllAdmins" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">管理员信息管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllStudents" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">学生信息管理</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="submenu">
+            <a href="/getAllCompanys" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">单位信息管理</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="submenu">
+            <a href="/getAllOffers" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">就业信息管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/showAllEmployments" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">签约信息管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllSkills" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">就业技能管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/getAllQuestions" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">答疑管理</span>
+                </div>
+            </a>
+        </li>
+        <li class="submenu">
+            <a href="/showAllApprovals" class="active">
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">审批管理</span>
+                </div>
+            </a>
+        </li>
+
+
+
+    </ul>
+    </li>
+    </ul>
+</div>
+<div class="content-container">
+    <nav class="navbar navbar-default">
+        <div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>审批信息管理</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa fa-comments"></i> 0</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-title-bar">
+                                Notification ( 0 )
+                            </li>
+                            <li class="message">
+                                No new notification
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown notification-alert">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-exclamation-circle"></i> 3</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-title-bar">
+                                Notification ( 3 )
+                            </li>
+                            <li>
+                                <ul class="notification-list">
+                                    <li>
+                                        <a href="#">
+                                            <div class="noti-icon noti-alert">
+                                                <i class="fa fa-exclamation-circle fa-2x"></i>
+                                            </div>
+                                            <div class="noti-message">1 new registration</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="noti-icon noti-success">
+                                                <i class="fa fa-check fa-2x"></i>
+                                            </div>
+                                            <div class="noti-message">3 new orders</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="noti-icon noti-primary">
+                                                <i class="fa fa-comments fa-2x"></i>
+                                            </div>
+                                            <div class="noti-message">2 customers messages</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.id}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu user-info">
+                            <li class="dropdown-title-bar">
+                                <img src="/static/images/profile.jpg" class="profile-img">
+                            </li>
+                            <li>
+                                <div class="navbar-login">
+                                    <h4 class="user-name">{{.id}}</h4>
+                                    <p>815486582@qq.com</p>
+                                    <div class="btn-group margin-bottom-2x" role="group">
+                                        <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">Profile</a></button>
+                                        <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">Logout</a></button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="container-fluid">
+
+        <div class="col-xs-12">
+            <span class="page-title red"><h3>Table</h3></span>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="content-block">
+                    <div class="block-title">审批信息表</div>
+                    <div class="block-content">
+                        <table class="table table-hover" id="tab">
+                            <thead>
+                            <tr>
+
+                                <th class="text-center">ID</th>
+                                <th class="text-center">学生学号</th>
+                                <th class="text-center">操作类型</th>
+                                <th class="text-center">是否签约</th>
+                                <th class="text-center">签约公司</th>
+                                <th class="text-center">签约岗位</th>
+                                <th class="text-center">解约原因</th>
+                                <th class="text-center">时间</th>
+                                <th  style="text-align:center;">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+{{/*                            {{range .json}}*/}}
+{{/*                            <tr >*/}}
+{{/*                                <td class="text-center">{{.Id}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Sid}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Operation}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Employed}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Cname}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Oname}}</td>*/}}
+{{/*                                <td class="text-center" >{{.Reason}}</td>*/}}
+{{/*                                  </tr>*/}}
+{{/*                            {{end}}*/}}
+
+
+
+<p style="display: inline;float: right"><input type="checkbox"  id="check" name="" value="" onchange="return approvalsCanBeDone()"/>仅显示可操作的申请</p>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+</body>
+<script>
+    function onload() {
+        let tab=document.getElementById("tab");
+        $.ajax({
+            type: "get",
+            url: "getAllApprovals",
+            //data:data,
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    var row = tab.insertRow(tab.rows.length);
+                    var c1 = row.insertCell(0);
+                    c1.innerHTML = data[i].Id;
+                    c1.className = "text-center";
+
+                    var c2 = row.insertCell(1);
+                    c2.innerHTML = data[i].Sid;
+                    c2.className = "text-center";
+
+                    var c3 = row.insertCell(2);
+                    c3.innerHTML = data[i].Operation;
+                    c3.className = "text-center";
+
+                    var c4 = row.insertCell(3);
+                    c4.innerHTML = data[i].Employed;
+                    c4.className = "text-center";
+
+                    var c5 = row.insertCell(4);
+                    c5.innerHTML = data[i].Cname;
+                    c5.className = "text-center";
+
+                    var c6 = row.insertCell(5);
+                    c6.innerHTML = data[i].Oname;
+                    c6.className = "text-center";
+
+                    var c7 = row.insertCell(6);
+                    c7.innerHTML = data[i].Reason;
+                    c7.className = "text-center";
+
+                    var c8 = row.insertCell(7);
+                    c8.innerHTML = data[i].Time;
+                    c8.className = "text-center";
+
+                    var c9 = row.insertCell(8);
+                   if(data[i].Mark==="是"){
+                        c9.innerHTML = "<a href=\"/approvalThis?id=" + c1.innerHTML + "\" class=\"btn btn-info\" >通过</a>";
+                        c9.className = "text-center";
+
+
+                    } else if( data[i].Mark==="否"){
+                        c9.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                        c9.className = "text-center";
+
+
+                    }
+
+                }
+            }
+        });
+
+
+
+    }
+
+    function approvalsCanBeDone() {
+        let check = document.getElementById("check");
+        let tab = document.getElementById("tab");
+
+        if (check.checked === true) {
+            console.log("选中了！");
+            var rowNum = tab.rows.length;
+            for (let i = 1; i < rowNum; i++) {
+                tab.deleteRow(i);
+                rowNum = rowNum - 1;
+                i = i - 1
+            }
+            $.ajax({
+                type: "get",
+                url: "approvalsCanBeDone",
+                //data:data,
+                datatype: 'json',
+                success: function (data) {
+                    console.log(data)
+                    for(let i=0;i<data.length;i++) {
+                        var row = tab.insertRow(tab.rows.length);
+                        var c1 = row.insertCell(0);
+                        c1.innerHTML = data[i].Id;
+                        c1.className = "text-center";
+
+                        var c2 = row.insertCell(1);
+                        c2.innerHTML = data[i].Sid;
+                        c2.className = "text-center";
+
+                        var c3 = row.insertCell(2);
+                        c3.innerHTML = data[i].Operation;
+                        c3.className = "text-center";
+
+                        var c4 = row.insertCell(3);
+                        c4.innerHTML = data[i].Employed;
+                        c4.className = "text-center";
+
+                        var c5= row.insertCell(4);
+                        c5.innerHTML = data[i].Cname;
+                        c5.className = "text-center";
+
+                        var c6= row.insertCell(5);
+                        c6.innerHTML = data[i].Oname;
+                        c6.className = "text-center";
+
+                        var c7= row.insertCell(6);
+                        c7.innerHTML = data[i].Reason;
+                        c7.className = "text-center";
+
+                        var c8= row.insertCell(7);
+                        c8.innerHTML = data[i].Time;
+                        c8.className = "text-center";
+
+                        var c9 = row.insertCell(8);
+                        if(data[i].Mark==="是"){
+                            c9.innerHTML = "<a href=\"/approvalThis?id=" + c1.innerHTML + "\" class=\"btn btn-info\" >通过</a>";
+                            c9.className = "text-center";
+
+
+                        } else if( data[i].Mark==="否"){
+                            c9.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                            c9.className = "text-center";
+
+
+                        }
+
+
+                    }
+
+                }
+            });
+        }else if (check.checked===false){
+            console.log("没选中！");
+            location.reload([true])
+
+        }
+    }
+
+
+</script>
+
+
+
+
+</html>

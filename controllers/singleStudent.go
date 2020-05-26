@@ -310,7 +310,7 @@ func (c *SingleStudentController) SingleStudentEmploymentAdding() {
 	Cid, _ := models.GetCidByCname(e.Cname)
 	Oid, _ := models.GetOidByOname(e.Oname, Cid)
 	fmt.Println("Cid:", Cid, "Oid:", Oid)
-	err := models.InsertAnEmployment(e, Cid, Oid)
+	err := models.InsertAnApproval(e, Cid, Oid)
 	if err != nil {
 		return
 	} else {

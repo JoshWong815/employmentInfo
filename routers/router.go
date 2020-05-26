@@ -105,4 +105,11 @@ func init() {
 	beego.Router("/questionAnswering", &controllers.QuestionController{}, "*:QuestionAnswering")
 	beego.Router("/showQuestions", &controllers.QuestionController{}, "get:ShowQuestions")
 
+	beego.Router("/showAllApprovals", &controllers.ApprovalController{}, "*:ShowAllApprovals")
+	beego.Router("/getAllApprovals", &controllers.ApprovalController{}, "*:GetAllApprovals")
+	beego.Router("/approvalThis", &controllers.ApprovalController{}, "*:ApprovalThis")
+	beego.Router("/approvalsCanBeDone", &controllers.ApprovalController{}, "*:ApprovalsCanBeDone")
+
+
+
 }

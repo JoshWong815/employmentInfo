@@ -209,7 +209,8 @@ func (c *MainController) LoginTest() {
 }
 
 func (c *MainController) Logout() {
-	c.DelSession("id")
+	//c.DelSession("id")
+	c.DestroySession()
 	c.Redirect("/", 302)
 }
 

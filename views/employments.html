@@ -33,7 +33,7 @@
 <body class="flat-blue sidebar-collapse" onload="return onload()">
 <div class="sidebar">
     <div class="menu-control toggle-sidebar">
-        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
+        <a class="navbar-brand" href="#" style="font-size: 15px"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
         <i class="fa fa-bars navicon"></i>
     </div>
     <ul class="menu">
@@ -100,6 +100,15 @@
                 <div>
                     <i class="menu-icon fa fa-table"></i>
                     <span class="menu-title">答疑管理</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="submenu">
+            <a href="/showAllApprovals" >
+                <div>
+                    <i class="menu-icon fa fa-table"></i>
+                    <span class="menu-title">审批管理</span>
                 </div>
             </a>
         </li>
@@ -220,7 +229,9 @@
                                 <th class="text-center">签约公司</th>
                                 <th class="text-center">签约岗位</th>
                                 <th class="text-center">解约原因</th>
-                                <th colspan="2" style="text-align:center;">操作</th>
+                                <th class="text-center">时间</th>
+                                <th style="text-align:center;">操作</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -282,20 +293,26 @@
                     c7.className = "text-center";
 
                     var c8 = row.insertCell(7);
+                    c8.innerHTML = data[i].Time;
+                    c8.className = "text-center";
+
+                    var c9 = row.insertCell(8);
                     if (c3.innerHTML === "解约" || c3.innerHTML === "从未签约") {
-                        c8.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
-                        c8.className = "text-center";
+                        c9.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                        c9.className = "text-center";
                     } else if(c3.innerHTML==="签约"&& data[i].Mark==="是"){
-                        c8.innerHTML = "<a href=\"/updateEmployment?id=" + c1.innerHTML + "\" class=\"btn btn-info\" >修改</a>";
-                        c8.className = "text-center";
+                        c9.innerHTML = "<a href=\"/updateEmployment?id=" + c1.innerHTML + "\" class=\"btn btn-info\" >修改</a>";
+                        c9.className = "text-center";
 
 
                     } else if(c3.innerHTML==="签约"&& data[i].Mark==="否"){
-                        c8.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
-                        c8.className = "text-center";
+                        c9.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                        c9.className = "text-center";
 
 
                     }
+
+
 
                 }
             }
@@ -355,12 +372,16 @@
                         c7.className = "text-center";
 
                         var c8= row.insertCell(7);
+                        c8.innerHTML = data[i].Time;
+                        c8.className = "text-center";
+
+                        var c9= row.insertCell(8);
                         if( c3.innerHTML==="解约"|| c3.innerHTML==="从未签约"){
-                            c8.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
-                            c8.className = "text-center";
+                            c9.innerHTML = "<a href=\"javascript:return false;\" class=\"btn btn-info\" style='color:gray;background-color:gray;border-color:gray' >修改</a>";
+                            c9.className = "text-center";
                         }else{
-                            c8.innerHTML = "<a href=\"/updateEmployment?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
-                            c8.className = "text-center";
+                            c9.innerHTML = "<a href=\"/updateEmployment?id="+c1.innerHTML+"\" class=\"btn btn-info\" >修改</a>";
+                            c9.className = "text-center";
                         }
 
 

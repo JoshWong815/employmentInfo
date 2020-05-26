@@ -15,6 +15,7 @@ type Employment struct {
 	Cname     string `orm:"size(128)"`
 	Oname     string `orm:"size(128)"`
 	Reason    string `orm:"size(128)"`
+	Time	 string	 `orm:"size(128)"`
 	Mark 	  string `orm:"size(128)"`
 }
 
@@ -61,7 +62,7 @@ func GetAllEmployments() ([]*Employment, error) {
 	var maps []orm.Params
 	var employments []*Employment
 	o := orm.NewOrm()
-	sql := "select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id"
+	sql := "select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,time,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id"
 	a, err := o.Raw(sql).Values(&maps)
 	fmt.Println("a:", a)
 	if err != nil {
@@ -102,6 +103,14 @@ func GetAllEmployments() ([]*Employment, error) {
 			employment.Reason = reason
 		} else {
 			employment.Reason = ""
+		}
+
+		//对时间进行断言
+		time, ok := map1["time"].(string)
+		if ok {
+			employment.Time = time
+		} else {
+			employment.Time = ""
 		}
 
 		//对是否是最新记录进行断言
@@ -346,7 +355,7 @@ func UpdateEmploymentById(e *Employment) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	sql := "update employment set cid=" + cidStr + ",oid=" + oidStr + " where id=" + idStr
+	sql := "update employment set cid=" + cidStr + ",oid=" + oidStr +",time=current_timestamp()"+" where id=" + idStr
 	fmt.Println(sql)
 	o := orm.NewOrm()
 	res, err := o.Raw(sql).Exec()
@@ -359,7 +368,7 @@ func UpdateEmploymentById(e *Employment) error {
 //查询每位学生最新的一条记录
 func EveryStudentNewestEmployment()([]*Employment){
 	var e []*Employment
-	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id where e.mark='是'"
+	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,time,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id where e.mark='是'"
 	fmt.Println(sql)
 	o:=orm.NewOrm()
 	n,err:=o.Raw(sql).QueryRows(&e)
