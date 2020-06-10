@@ -55,6 +55,7 @@ func (c *ApprovalController) ApprovalThis(){
 func (c *ApprovalController) ShowAllApprovals(){
 
 	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	c.TplName="approvals.html"
 }

@@ -50,6 +50,8 @@ func (c *QuestionController) QuestionAdding() {
 }
 func (c *QuestionController) AddQuestion() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "question_add.html"
 }
 func (c *QuestionController) DeleteQuestion() {
@@ -95,6 +97,8 @@ func (c *QuestionController) QuestionAnswering() {
 	c.TplName = "questions.html"
 }
 func (c *QuestionController) ShowQuestions() {
+	c.Data["name"] = c.GetSession("name")
+	c.Data["name"] = c.GetSession("name")
 	c.TplName = "Questions.html"
 }
 func (c *QuestionController) AnswerTheQuestion() {
@@ -110,6 +114,8 @@ func (c *QuestionController) AnswerTheQuestion() {
 	}
 	fmt.Println("该提问的信息：", Question)
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = Question
 	c.TplName = "question_answer.html"
 }
@@ -166,6 +172,7 @@ func (c *QuestionController) GetOne() {
 // @router / [get]
 func (c *QuestionController) GetAllQuestions() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
 	c.SessionTest()
 	sid := c.GetString("sid")
 	questions, err := models.GetAllQuestions(sid)

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -22,7 +23,7 @@ func (c *AdminController) URLMapping() {
 	c.Mapping("GetAllAdmins", c.GetAllAdmins)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
-	c.Mapping("ShowAdmins", c.ShowAdmins)
+
 	c.Mapping("UpdateAdmin", c.UpdateAdmin)
 	c.Mapping("AdminUpdating", c.AdminUpdating)
 	c.Mapping("DeleteAdmin", c.DeleteAdmin)
@@ -39,6 +40,8 @@ func (c *AdminController) AdminAdding() {
 		c.Ctx.WriteString("转换model失败")
 		fmt.Println(err)
 	}
+	lastAdminId:=models.GetLastAdminId()
+	s.Id=strconv.Itoa(lastAdminId+1)
 	id, err := models.AddAdmin(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllAdmins", 302)
@@ -51,6 +54,8 @@ func (c *AdminController) AdminAdding() {
 }
 func (c *AdminController) AddAdmin() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "admin_add.html"
 }
 func (c *AdminController) DeleteAdmin() {
@@ -83,9 +88,7 @@ func (c *AdminController) AdminUpdating() {
 	}
 	c.TplName = "admins.html"
 }
-func (c *AdminController) ShowAdmins() {
-	c.TplName = "admins.html"
-}
+
 func (c *AdminController) UpdateAdmin() {
 	id := c.GetString("id")
 	//id := c.Ctx.Input.Param(":id")
@@ -98,7 +101,10 @@ func (c *AdminController) UpdateAdmin() {
 		fmt.Println(err)
 	}
 	fmt.Println("该名学生的信息：", Admin)
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.Data["list"] = Admin
+	c.SessionTest()
 	c.TplName = "admin_update.html"
 }
 
@@ -156,11 +162,12 @@ func (c *AdminController) GetAllAdmins() {
 	c.SessionTest()
 	//fmt.Println("id:",c.Data["id"])
 	//c.SessionTest()
+
 	var fields []string
 	var sortby []string
 	var order []string
 	var query = make(map[string]string)
-	var limit int64 = 10
+	var limit int64 = 100
 	var offset int64
 
 	// fields: col1,col2,entity.col3
@@ -205,6 +212,8 @@ func (c *AdminController) GetAllAdmins() {
 	}
 
 	//c.ServeJSON()
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "admin.html"
 
 }

@@ -54,11 +54,12 @@ func (c *OfferController) MohuSelectOffers(){
 	c.Data["json"]=m
 	//c.ServeJSON()
 	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 
 	c.TplName="offers.html"
 }
-
+//获得所有的单位名称列表
 func (c *OfferController) GetAllCompanyInOffer() {
 	companys, _ := models.GetAllCompanyInOffer()
 	c.Data["json"] = companys
@@ -82,6 +83,9 @@ func (c *OfferController) OfferAdding() {
 	}
 }
 func (c *OfferController) AddOffer() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "offer_add.html"
 }
 func (c *OfferController) DeleteOffer() {
@@ -115,6 +119,9 @@ func (c *OfferController) OfferUpdating() {
 	c.TplName = "offers.html"
 }
 func (c *OfferController) ShowOffers() {
+	c.Data["name"] = c.GetSession("name")
+	c.Data["id"] = c.GetSession("id")
+	c.SessionTest()
 	c.TplName = "offers.html"
 }
 func (c *OfferController) UpdateOffer() {
@@ -128,6 +135,9 @@ func (c *OfferController) UpdateOffer() {
 		fmt.Println(err)
 	}
 	//fmt.Println("该名学生的信息：",Offer)
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = Offer
 	c.TplName = "offer_update.html"
 }
@@ -165,6 +175,7 @@ func (c *OfferController) GetOne() {
 // @router / [get]
 func (c *OfferController) GetAllOffers() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
 	c.SessionTest()
 	offers, err := models.GetAllOffers()
 	if err != nil {

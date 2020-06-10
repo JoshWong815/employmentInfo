@@ -28,12 +28,36 @@ func (c *EmploymentController) URLMapping() {
 	c.Mapping("EmploymentUpdating", c.EmploymentUpdating)
 	c.Mapping("GetLastEmployed", c.GetLastEmployed)
 	c.Mapping("EveryStudentNewestEmployment", c.EveryStudentNewestEmployment)
+	c.Mapping("GetAllSid", c.GetAllSid)
 
 
 }
+//获得所有的学号
+func (c *EmploymentController) GetAllSid(){
+	sql:="select id as sid from student"
+	var arrs []orm.Params
+	var sids []string
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	n,err:=o.Raw(sql).Values(&arrs)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	fmt.Println("一共有",n,"条记录")
+	for i:=range arrs{
+		map1:=arrs[i]
+		sids=append(sids,map1["sid"].(string))
+	}
+	fmt.Println(sids)
+	c.Data["json"]=sids
+	c.ServeJSON()
+}
+
+
 func (c *EmploymentController) ShowAllEmployments(){
 	fmt.Println("sadasdasfasfasf")
 	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	c.TplName="employments.html"
 }
@@ -104,6 +128,9 @@ func (c *EmploymentController) UpdateEmployment() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = e
 	c.TplName = "employment_update.html"
 }
@@ -112,6 +139,7 @@ func (c *EmploymentController) UpdateEmployment() {
 func (c *EmploymentController) GetSidEmployment() {
 	sid := c.GetString("sid")
 	cname, oname, _ := models.GetSidEmployment(sid)
+	fmt.Println("从model获得的cname和oname的值为：",cname,oname)
 	fmt.Println(sid + "已签约" + cname + "公司的" + oname + "岗位")
 	type CandSname struct {
 		Cname string
@@ -207,6 +235,9 @@ func (c *EmploymentController) GetAllCompanyNames() {
 
 //添加签约信息页面的初始化
 func (c *EmploymentController) AddEmployment() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "employment_add.html"
 	//c.GetAllCompanyIdAndNameInEmployment()
 
@@ -214,6 +245,7 @@ func (c *EmploymentController) AddEmployment() {
 
 func (c *EmploymentController) GetAllEmployments() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	employments, err := models.GetAllEmployments()
 	if err != nil {
 		c.Data["json"] = err

@@ -24,38 +24,49 @@
 
     <script type="text/javascript">
          function check(){
-             var id= document.getElementById('Id');
-             var id=id.value;
-
-      var name= document.getElementById('Name');
-      var name=name.value;
+             let err=document.getElementById("err");
+             err.innerHTML="";
+      let name= document.getElementById('Name');
+      let nameValue=name.value;
 
       var city= document.getElementById('City');
-      var city=city.value;
+      var cityValue=city.value;
 
       var note= document.getElementById('Note');
-      var note=note.value;
+      var noteValue=note.value;
 
-             // if (!id){  //如果用户没有输入单位id
-             //     alert('请输入单位id！');
-             //     return false;
-             // }
-      if (!name){  //如果用户没有输入单位名称
-          alert('请输入单位名称！');
-          return false;
-      }
+             if (!nameValue){  //如果用户没有输入单位名称
+                 alert('请输入单位名称！');
+                 return false;
+             }
 
-             if (!city){  //如果用户没有输入城市
+             $.ajax({
+                 type:"POST",
+                 url:"getAllCompanysInOffer",
+                 //data:data,
+                 datatype:'json',
+                 success:function(res){//res后台返回的数据
+                     console.log("res的值为：",res);
+                    for (let i=0;i<res.length;i++){
+                        if (res[i]===nameValue){
+
+                         err.innerHTML="该单位已存在！";
+                            //alert("该单位已存在！");
+                            return false;
+                        }
+                    }
+                 }
+             });
+
+
+             if (!cityValue){  //如果用户没有输入城市
                  alert('请输入所在城市！');
                  return false;
              }
-        
-
-       if(!note){ //如果用户没有输入单位描述
-          alert('请输入单位描述！');
-          return false;
-      }
-
+             if (!noteValue){  //如果用户没有输入单位描述
+                 alert('请输入单位描述！');
+                 return false;
+             }
      
       return true;
    }
@@ -66,7 +77,7 @@
 <body class="flat-blue sidebar-collapse">
     <div class="sidebar">
         <div class="menu-control toggle-sidebar">
-            <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
+            <a class="navbar-brand" href="/index" style="font-size: 15px"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
             <i class="fa fa-bars navicon"></i>
         </div>
         <ul class="menu">
@@ -80,15 +91,15 @@
             </li>
 
             <li class="submenu">
-                <a href="/getAllOffers">
+                <a href="/getAllCompanys">
                     <div>
                         <i class="menu-icon fa fa-table"></i>
-                        <span class="menu-title">单位信息表</span>
+                        <span class="menu-title">单位信息管理</span>
                     </div>
                 </a>
             </li>
             <li class="submenu">
-                <a href="/addOffer" class="active">
+                <a href="/addCompany" class="active">
                     <div>
                         <i class="menu-icon fa fa-file-text-o"></i>
                         <span class="menu-title">添加单位信息</span>
@@ -108,75 +119,22 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>单位信息管理</a>
+
+                        <a class="navbar-brand" href="/getAllCompanys"><i class="fa fa-bar-chart"></i>单位信息管理</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
+
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa fa-comments"></i> 0</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-title-bar">
-                                    Notification ( 0 )
-                                </li>
-                                <li class="message">
-                                    No new notification
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown notification-alert">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-exclamation-circle"></i> 3</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-title-bar">
-                                    Notification ( 3 )
-                                </li>
-                                <li>
-                                    <ul class="notification-list">
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-alert">
-                                                    <i class="fa fa-exclamation-circle fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">1 new registration</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-success">
-                                                    <i class="fa fa-check fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">3 new orders</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-primary">
-                                                    <i class="fa fa-comments fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">2 customers messages</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.userName}} <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.name}} <span class="caret"></span></a>
                             <ul class="dropdown-menu user-info">
-                                <li class="dropdown-title-bar">
-                                    <img src="/static/images/profile.jpg" class="profile-img">
-                                </li>
+
                                 <li>
                                     <div class="navbar-login">
-                                        <h4 class="user-name">{{.userName}}</h4>
-                                        <p>815486582@qq.com</p>
+                                        <h4 class="user-name">帐号：{{.id}}</h4>
+                                        <p>昵称：{{.name}}</p>
                                         <div class="btn-group margin-bottom-2x" role="group">
-                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">Profile</a></button>
-                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">Logout</a></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">主页</a></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">退出</a></button>
                                         </div>
                                     </div>
                                 </li>
@@ -211,7 +169,9 @@
                                     <label for="inputPassword3" class="col-sm-3 control-label">单位名称</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="Name" name="Name" placeholder="Name">
+                                        <div id="err" style="display: inline;color: red"></div>
                                     </div>
+
                                 </div>
 
                                 <div class="form-group">
@@ -236,7 +196,7 @@
                                   <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-3 control-label">单位描述</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" style="word-wrap:break-word;height:500px;text-align: left" id="Note" name="Note">{{.list.Note}}</textarea>
+                                        <textarea type="text" class="form-control" style="word-wrap:break-word;height:500px;text-align: left" id="Note" name="Note"></textarea>
                                     </div>
                                 </div>
 
@@ -257,5 +217,7 @@
                 </div>
                
 </body>
+<script>
 
+</script>
 </html>

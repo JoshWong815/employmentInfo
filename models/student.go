@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/astaxie/beego/orm"
@@ -20,6 +21,27 @@ type Student struct {
 func init() {
 	orm.RegisterModel(new(Student))
 }
+
+//查询最后一名student用户的id
+func GetLaststudentId() int{
+	sql:="SELECT id from student order by id desc limit 1"
+	var n int
+	var maps []orm.Params
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	_,err:=o.Raw(sql).Values(&maps)
+	if err!=nil{
+		fmt.Println("查询查询最后一名student用户的id时出错！err:",err)
+	}
+	for i:=range maps{
+		map1:=maps[i]
+		fmt.Println("aaa",map1["id"])
+		n, _ = strconv.Atoi((map1["id"].(string)))
+	}
+	fmt.Println("n:",n)
+	return n
+}
+
 func GetSidBySname(sname string) (int, error) {
 	var aid *int
 	sql := "select id from student where name=" + sname

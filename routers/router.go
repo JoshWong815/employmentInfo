@@ -42,7 +42,7 @@ func init() {
 	beego.Router("/deleteAdmin", &controllers.AdminController{}, "*:DeleteAdmin")
 	beego.Router("/addAdmin", &controllers.AdminController{}, "*:AddAdmin")
 	beego.Router("/adminAdding", &controllers.AdminController{}, "*:AdminAdding")
-	beego.Router("/showAdmins", &controllers.AdminController{}, "get:ShowAdmins")
+	//beego.Router("/showAdmins", &controllers.AdminController{}, "get:ShowAdmins")
 
 	beego.Router("/getAllStudents", &controllers.StudentController{}, "get:GetAllStudents")
 	beego.Router("/updateStudent", &controllers.StudentController{}, "*:UpdateStudent")
@@ -78,6 +78,7 @@ func init() {
 	beego.Router("/employmentUpdating", &controllers.EmploymentController{}, "*:EmploymentUpdating")
 	beego.Router("/getLastEmployed", &controllers.EmploymentController{}, "*:GetLastEmployed")
 	beego.Router("/everyStudentNewestEmployment", &controllers.EmploymentController{}, "*:EveryStudentNewestEmployment")
+	beego.Router("/getAllSid", &controllers.EmploymentController{}, "*:GetAllSid")
 
 
 

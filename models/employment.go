@@ -285,16 +285,16 @@ func CheckSid(sid string) (string, error) {
 	fmt.Println("res3的值为：", res3)
 	//1.从未签约过，可签约 2.已签约，只能解约 3.已解约，可签约
 
-	//签约的记录总数减去解约的记录总数，如果等于一，说明该名学生当前已经签约了，只能进行解约操作，返回t
+	//签约的记录总数减去解约的记录总数，如果等于一，说明该名学生当前已经签约了，只能进行解约操作，返回employed
 	if res-res2 == 1 {
 		return "employed", nil
 	}
 
-	//签约的记录总数减去解约的记录总数，如果等于0，并且签约的次数不等于0，说明该名学生当前已经解约了，可以签约，返回f
+	//签约的记录总数减去解约的记录总数，如果等于0，并且签约的次数不等于0，说明该名学生当前已经解约了，可以签约，返回unemployed
 	if res-res2 == 0 && res != 0 {
 		return "unemployed", nil
 	}
-	//签约的记录总数减去解约的记录总数，如果等于0，并且从未签约过，说明该名学生从未签约过，可以签约，返回f
+	//签约的记录总数减去解约的记录总数，如果等于0，并且从未签约过，说明该名学生从未签约过，并且没有记录从未签约，那么他可以签约，返回neverBothEmployOrNever
 	if res-res2 == 0 && res3 == 0 {
 		return "neverBothEmployOrNever", nil
 	}
@@ -315,7 +315,8 @@ func GetSidEmployment(sid string) (string, string, error) {
 	res, err := o.Raw(sql).Values(&maps)
 	fmt.Println("res:", res)
 	if err != nil {
-		return "", "", err
+		fmt.Println("Models.GetSidEmployment.err:",err)
+		//return "", "", err
 	}
 	for i := range maps {
 		var e Employment
@@ -323,6 +324,10 @@ func GetSidEmployment(sid string) (string, string, error) {
 		e.Cname = map1["cname"].(string)
 		e.Oname = map1["oname"].(string)
 		employments = append(employments, &e)
+	}
+	fmt.Println("employments:",employments)
+	if len(employments)==0{
+		return "","",nil
 	}
 	return employments[0].Cname, employments[0].Oname, nil
 }
@@ -368,7 +373,7 @@ func UpdateEmploymentById(e *Employment) error {
 //查询每位学生最新的一条记录
 func EveryStudentNewestEmployment()([]*Employment){
 	var e []*Employment
-	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,time,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id where e.mark='是'"
+	sql:="select e.id id,sid,operation,employed,c.name cname,o.name oname,reason,time,mark from (company c,offer o) right join employment e on e.cid=c.id and e.oid=o.id where e.mark='是' ORDER BY sid"
 	fmt.Println(sql)
 	o:=orm.NewOrm()
 	n,err:=o.Raw(sql).QueryRows(&e)

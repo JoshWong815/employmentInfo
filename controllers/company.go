@@ -8,13 +8,11 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/astaxie/beego"
 )
 
 //  CompanyController operations for Company
 type CompanyController struct {
-	beego.Controller
+	MainController
 }
 
 // URLMapping ...
@@ -37,19 +35,30 @@ func (c *CompanyController) CompanyAdding() {
 	if err := c.ParseForm(&s); err != nil {
 		fmt.Println("转换model失败")
 		c.Ctx.WriteString("转换model失败")
-		fmt.Println(err)
+		fmt.Println("转换model是出错：",err)
 	}
+	fmt.Println("s:",s)
 	id, err := models.AddCompany(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllCompanys", 302)
 	} else if err != nil {
-		fmt.Println("第二次err添加失败")
+		fmt.Println("第二次err添加失败,err:",err)
 		//c.Ctx.WriteString("第二次err添加失败")
-		fmt.Println(err)
+		str:="主键重复！"
+		c.Data["err"]=str
+		c.Redirect("/addCompany",302)
+		//c.Abort("401")
+		//c.Data["err"]="主键重复"
+		//beego.Error(err)
+		//c.Ctx.WriteString(err.Error())
+		//c.TplName="company_add.html"
 	}
 	c.Redirect("/getAllCompanys", 302)
 }
 func (c *CompanyController) AddCompany() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "company_add.html"
 }
 func (c *CompanyController) DeleteCompany() {
@@ -83,6 +92,9 @@ func (c *CompanyController) CompanyUpdating() {
 	c.TplName = "companys.html"
 }
 func (c *CompanyController) ShowCompanys() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "companys.html"
 }
 func (c *CompanyController) UpdateCompany() {
@@ -96,6 +108,9 @@ func (c *CompanyController) UpdateCompany() {
 		fmt.Println(err)
 	}
 	fmt.Println("该单位的信息：", Company)
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = Company
 	c.TplName = "company_update.html"
 }
@@ -152,11 +167,13 @@ func (c *CompanyController) GetOne() {
 // @router / [get]
 func (c *CompanyController) GetAllCompanys() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	var fields []string
 	var sortby []string
 	var order []string
 	var query = make(map[string]string)
-	var limit int64 = 10
+	var limit int64 = 100
 	var offset int64
 
 	// fields: col1,col2,entity.col3
@@ -201,6 +218,7 @@ func (c *CompanyController) GetAllCompanys() {
 	}
 
 	//c.ServeJSON()
+	c.SessionTest()
 	c.TplName = "companys.html"
 
 }

@@ -90,10 +90,10 @@
     </script>
 </head>
 
-<body class="flat-blue sidebar-collapse">
+<body class="flat-blue sidebar-collapse" onload="return getAllSid()">
     <div class="sidebar">
         <div class="menu-control toggle-sidebar">
-            <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
+            <a class="navbar-brand" href="/index" style="font-size: 15px"><i class="fa fa-bar-chart"></i>高校就业信息管理系统</a>
             <i class="fa fa-bars navicon"></i>
         </div>
         <ul class="menu">
@@ -110,7 +110,7 @@
                 <a href="/showAllEmployments">
                     <div>
                         <i class="menu-icon fa fa-table"></i>
-                        <span class="menu-title">签约信息表</span>
+                        <span class="menu-title">签约信息管理</span>
                     </div>
                 </a>
             </li>
@@ -135,75 +135,22 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#"><i class="fa fa-bar-chart"></i>签约信息管理</a>
+
+                        <a class="navbar-brand" href="/showAllEmployments"><i class="fa fa-bar-chart"></i>签约信息管理</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
+
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa fa-comments"></i> 0</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-title-bar">
-                                    Notification ( 0 )
-                                </li>
-                                <li class="message">
-                                    No new notification
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown notification-alert">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-exclamation-circle"></i> 3</a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-title-bar">
-                                    Notification ( 3 )
-                                </li>
-                                <li>
-                                    <ul class="notification-list">
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-alert">
-                                                    <i class="fa fa-exclamation-circle fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">1 new registration</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-success">
-                                                    <i class="fa fa-check fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">3 new orders</div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="noti-icon noti-primary">
-                                                    <i class="fa fa-comments fa-2x"></i>
-                                                </div>
-                                                <div class="noti-message">2 customers messages</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.id}} <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{.name}}<span class="caret"></span></a>
                             <ul class="dropdown-menu user-info">
-                                <li class="dropdown-title-bar">
-                                    <img src="/static/images/profile.jpg" class="profile-img">
-                                </li>
+
                                 <li>
                                     <div class="navbar-login">
-                                        <h4 class="user-name">{{.id}}</h4>
-                                        <p>815486582@qq.com</p>
+                                        <h4 class="user-name">帐号：{{.id}}</h4>
+                                        <p>昵称：{{.name}}</p>
                                         <div class="btn-group margin-bottom-2x" role="group">
-                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">Profile</a></button>
-                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">Logout</a></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i><a href="/index">主页</a></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i><a href="/logout">退出</a></button>
                                         </div>
                                     </div>
                                 </li>
@@ -232,7 +179,8 @@
                                 <div class="form-group">
                                     <label for="inputPassword3" id="forma" class="col-sm-3 control-label">学号</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="Sid" name="Sid" placeholder="学号" onblur="return checkSid()" onchange="return clearForm()">
+{{/*                                        <input type="text" class="form-control" id="Sid" name="Sid" placeholder="学号" onblur="return checkSid()" onchange="return clearForm()">*/}}
+                                        <select class="form-control" id="Sid" name="Sid" onblur="return checkSid()" onchange="return clearForm()"></select>
                                     </div>
                                 </div>
 
@@ -317,7 +265,7 @@
         location.reload([true])
     }
 
-    
+    //获得选中的公司的所有的岗位信息
     function getCompanysOffer(value) {
         //第一条语句是为了解决如果用户选择了一个公司，下面的岗位列表显示出该公司的岗位，然后又选了另一个公司，但原来那个公司的岗位还在的问题
         $("#Oname").find("option").remove();
@@ -382,13 +330,6 @@
            // Employed.value="是"
            Employed.options.remove("否")
             Employed.options.add(new Option("是","是"))
-        }if (value===""){
-            Cname.style.display="inline"
-            Oname.style.display="inline"
-            Reason.type = "hidden"
-            // Employed.value="是"
-            Employed.options.remove("是")
-            Employed.options.add(new Option("否","否"))
         }
         if (value==="从未签约"){
 
@@ -424,6 +365,7 @@
 
             success:function (data) {
                 console.log("data的值为：",data)
+                //employed表示该学生已经签约了，只能进行解约操作
                 if(data==='employed'){
                 alert("该学生已经签约！只能进行解约操作！")
                     //$("#id_username").next().text(data.msg).parent().parent().addClass("has-error");
@@ -441,7 +383,7 @@
                     //
                     // }
 
-
+                //unemployed表示该学生已经解约了，可以签约
                 }else if(data==='unemployed'){
 
                     $.ajax({
@@ -459,29 +401,9 @@
                         }
                         });
 
-
-
                     var Operation = document.getElementById("Operation");
                     Operation.options.add(new Option("签约", "签约"))
-                    //Operation.options.add(new Option("从未签约", "从未签约"))
-                   // Operation.options.length=0;
-                    // var op = Operation.options;
-                    // console.log(op);
-                    // var no1 = Operation.options[1].value;
-                    // console.log("no1:",no1);
-                    // var f1=0;
-
-                    // for(i=0;i<4;i++){
-                    //     console.log("tt",Operation.options[i].value,"pp");
-                    //     if (Operation.options[i].value==="签约")
-                    //        f1=1
-                    // }
-                    //     if (f1===0) {
-                    //         Operation.options.add(new Option("签约", "签约"))
-                    //     }
-
-
-
+                   // neverBothEmployOrNever表示该学生从未签约过，并且没有记录从未签约，他么他既可以签约，也可选择从未签约
                 } else if (data==='neverBothEmployOrNever'){
 
                     $.ajax({
@@ -504,6 +426,7 @@
                     Operation.options.add(new Option("从未签约", "从未签约"))
 
                 }
+                //neverOnlyEmploy表示该名学生已经有了一条从未签约过的记录，说明该名学生从未签约过，并记录了从未签约的情况，那么他现在只能签约操作
                 else if (data==='neverOnlyEmploy'){
 
                     $.ajax({
@@ -545,6 +468,22 @@
       Cname.options.length=0;
       Reason.value=""
    }
+    //获得所有的学生学号
+    function getAllSid(){
+        let Sid=document.getElementById("Sid");
+        $.ajax({
+            url:"getAllSid",
+            type: "get",
+            //data:sidValue,
+
+            success:function (data) {
+                console.log(data);
+                for (i=0;i<data.length;i++){
+                    Sid.options.add(new Option(data[i], data[i]));
+                }
+            }
+        });
+    }
 
 
 

@@ -149,6 +149,8 @@ func (c *SingleStudentController) GetSkillsOfThisType() {
 
 func (c *SingleStudentController) ShowSingleStudentQuestions() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "singleStudent/singleStudentQuestions.html"
 }
 
@@ -194,12 +196,14 @@ func (c *SingleStudentController) SingleStudentQuestionAdding() {
 
 func (c *SingleStudentController) SingleStudentAddQuestion() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	c.TplName = "singleStudent/singleStudentAddQuestion.html"
 }
 
 func (c *SingleStudentController) SingleStudentQuestions() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	sid := c.GetString("sid")
 	questions, err := models.GetAllQuestions(sid)
@@ -214,6 +218,8 @@ func (c *SingleStudentController) SingleStudentQuestions() {
 
 func (c *SingleStudentController) SingleStudentSkills() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	var fields []string
 	var sortby []string
 	var order []string
@@ -295,6 +301,7 @@ func (c *SingleStudentController) GetSidEmployed() {
 //学生自己签约某个岗位的页面跳转
 func (c *SingleStudentController) StudentEmployTheOffer() {
 	c.SessionTest()
+	c.Data["name"]=c.GetSession("name")
 	c.TplName = "singleStudent/singleStudentEmployTheOffer.html"
 }
 
@@ -321,6 +328,7 @@ func (c *SingleStudentController) SingleStudentEmploymentAdding() {
 
 func (c *SingleStudentController) SingleStudentOffers() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	offers, err := models.GetAllOffers()
 	if err != nil {
@@ -335,6 +343,8 @@ func (c *SingleStudentController) SingleStudentOffers() {
 
 func (c *SingleStudentController) SingleStudentCompanys() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	var fields []string
 	var sortby []string
 	var order []string
@@ -411,6 +421,8 @@ func (c *SingleStudentController) SingleStudentUpdating() {
 //学生端的个人信息
 func (c *SingleStudentController) SingleStudentInfo() {
 	c.TplName = "singleStudent/singleStudentInfo.html"
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	id := c.GetSession("id")
 	fmt.Println("该名学生的id的值为：", id)
@@ -426,5 +438,6 @@ func (c *SingleStudentController) SingleStudentInfo() {
 //学生端的主页
 func (c *SingleStudentController) StudentMainPage() {
 	c.TplName = "singleStudent/studentMainPage.html"
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 }

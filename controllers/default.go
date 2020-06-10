@@ -66,7 +66,7 @@ func (c *MainController) GetMainEchartOfCompanyType(){
 	for i:=range m{
 		map1[m[i].Name]++
 	}
-	fmt.Println(map1)
+	//fmt.Println(map1)
 	var resp []*TypeOfCompany
 	for i:=range map1{
 		var a TypeOfCompany
@@ -82,7 +82,7 @@ func (c *MainController) GetMainEchartOfCompanyType(){
 func (c *MainController) GetMainEchartOfCompanyCity(){
 
 	e:=models.EveryStudentNewestEmployment()
-	fmt.Println(e)
+	//fmt.Println(e)
 	var m []*CitysOfCompany
 	for i:=range e{
 		if e[i].Operation=="签约"{
@@ -104,7 +104,7 @@ func (c *MainController) GetMainEchartOfCompanyCity(){
 		}
 
 	}
-	fmt.Println("m:",m)
+	//fmt.Println("m:",m)
 	for i:=range m{
 		fmt.Println(m[i])
 	}
@@ -112,7 +112,7 @@ func (c *MainController) GetMainEchartOfCompanyCity(){
 	for i:=range m{
 		map1[m[i].Name]++
 	}
-	fmt.Println(map1)
+	//fmt.Println(map1)
     var resp []*CitysOfCompany
 	for i:=range map1{
 		var a CitysOfCompany
@@ -139,6 +139,7 @@ func (c *MainController) GetSessionNum() int {
 }
 func (c *MainController) Index() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.TplName = "index.html"
 	if c.Data["id"] == nil {
 		c.Redirect("/login", 302)
@@ -162,20 +163,33 @@ func (c *MainController) LoginTest() {
 
 	sql1 := "select * from admin where id='" + id + "' and password='" + password + "'"
 	fmt.Println(sql1)
+
 	res1, err1 := o.Raw(sql1).Values(&maps1)
+	var NameOfAdmin string
+	for i:=range maps1{
+		map1:=maps1[i]
+		NameOfAdmin=map1["name"].(string)
+	}
+	fmt.Println("NameOfAdmin:",NameOfAdmin)
 
 	sql2 := "select * from student where id='" + id + "' and password='" + password + "'"
 	fmt.Println(sql2)
 	res2, err2 := o.Raw(sql2).Values(&maps2)
+	var NameOfStudent string
+	for i:=range maps2{
+		map2:=maps2[i]
+		NameOfStudent=map2["name"].(string)
+	}
+	fmt.Println("NameOfStudent:",NameOfStudent)
 
 	fmt.Println("res1的值为：", res1)
 	fmt.Println("res2的值为：", res2)
 
 	if err1 != nil {
-		fmt.Println(err1)
+		fmt.Println("err1:",err1)
 	}
 	if err2 != nil {
-		fmt.Println(err2)
+		fmt.Println("err2:",err2)
 	}
 	//err1 := qs.Filter("id", id).Filter("password", password).One(&student)
 	//如果是管理员用户
@@ -183,18 +197,32 @@ func (c *MainController) LoginTest() {
 		//fmt.Println(user.name,user.Password)
 		c.SetSession("id", id)
 		c.Data["id"] = c.GetSession("id")
+		c.SetSession("name",NameOfAdmin)
+		c.Data["name"]=c.GetSession("name")
+		fmt.Println("c.data[name]:",c.Data["name"])
 		//Sessionid=c.CruSession.SessionID()
 		c.Redirect("/index", 302)
 		//如果是学生用户
 	} else if res1 == 0 && res2 == 1 {
-		//fmt.Println(user.name,user.Password)
-		c.SetSession("id", id)
-		fmt.Println("id的值为：", id)
 
-		//Sessionid=c.CruSession.SessionID()
+		c.SetSession("id", id)
+		c.Data["id"] = c.GetSession("id")
+		fmt.Println("id的值为：", id)
+		c.SetSession("name",NameOfStudent)
+		c.Data["name"]=c.GetSession("name")
 		c.Redirect("/studentMainPage", 302)
 
-	} else if err1 == orm.ErrNoRows {
+	}
+	//两条查询都没有结果
+	if res1==0 &&  res2==0{
+		str := "用户名或密码输入错误!"
+		c.Data["info"] = str
+		c.TplName = "login.html"
+		//c.Redirect("/login", 302)
+
+	}
+
+	if err1 == orm.ErrNoRows {
 		str := "用户名或密码输入错误!"
 		c.Data["info"] = str
 		c.TplName = "login.html"
@@ -209,8 +237,9 @@ func (c *MainController) LoginTest() {
 }
 
 func (c *MainController) Logout() {
-	//c.DelSession("id")
-	c.DestroySession()
+	c.DelSession("id")
+	c.DelSession("name")
+	//c.DestroySession()
 	c.Redirect("/", 302)
 }
 

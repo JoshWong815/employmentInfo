@@ -8,13 +8,11 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/astaxie/beego"
 )
 
 //  SkillController operations for Skill
 type SkillController struct {
-	beego.Controller
+	MainController
 }
 
 // URLMapping ...
@@ -51,6 +49,9 @@ func (c *SkillController) SkillAdding() {
 	c.Redirect("/getAllSkills", 302)
 }
 func (c *SkillController) AddSkill() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "skill_add.html"
 }
 func (c *SkillController) DeleteSkill() {
@@ -84,6 +85,9 @@ func (c *SkillController) SkillUpdating() {
 	c.TplName = "skills.html"
 }
 func (c *SkillController) ShowSkills() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "skills.html"
 }
 func (c *SkillController) UpdateSkill() {
@@ -97,6 +101,9 @@ func (c *SkillController) UpdateSkill() {
 		fmt.Println(err)
 	}
 	fmt.Println("该单位的信息：", Skill)
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = Skill
 	c.TplName = "skill_update.html"
 }
@@ -153,6 +160,8 @@ func (c *SkillController) GetOne() {
 // @router / [get]
 func (c *SkillController) GetAllSkills() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"] = c.GetSession("name")
+	c.SessionTest()
 	var fields []string
 	var sortby []string
 	var order []string

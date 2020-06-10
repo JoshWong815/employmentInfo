@@ -136,6 +136,8 @@ func (c *StudentController) StudentAdding() {
 		c.Ctx.WriteString("转换model失败")
 		fmt.Println(err)
 	}
+	lastStudentId:=models.GetLaststudentId()
+	s.Id=strconv.Itoa(lastStudentId+1)
 	id, err := models.AddStudent(&s)
 	if err == nil && id > 0 {
 		c.Redirect("/getAllStudents", 302)
@@ -148,6 +150,8 @@ func (c *StudentController) StudentAdding() {
 }
 func (c *StudentController) AddStudent() {
 	c.Data["id"] = c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.TplName = "student_add.html"
 }
 func (c *StudentController) DeleteStudent() {
@@ -181,6 +185,8 @@ func (c *StudentController) StudentUpdating() {
 	c.TplName = "students.html"
 }
 func (c *StudentController) ShowStudents() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.TplName = "students.html"
 }
 func (c *StudentController) UpdateStudent() {
@@ -195,6 +201,9 @@ func (c *StudentController) UpdateStudent() {
 		fmt.Println(err)
 	}
 	//fmt.Println("该名学生的信息：",student)
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
+	c.SessionTest()
 	c.Data["list"] = student
 	c.TplName = "student_update.html"
 }
@@ -250,6 +259,8 @@ func (c *StudentController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *StudentController) GetAllStudents() {
+	c.Data["id"]=c.GetSession("id")
+	c.Data["name"]=c.GetSession("name")
 	c.SessionTest()
 	//fmt.Println("id:",c.Data["id"])
 	//c.SessionTest()
@@ -257,7 +268,7 @@ func (c *StudentController) GetAllStudents() {
 	var sortby []string
 	var order []string
 	var query = make(map[string]string)
-	var limit int64 = 10
+	var limit int64 = 100
 	var offset int64
 
 	// fields: col1,col2,entity.col3

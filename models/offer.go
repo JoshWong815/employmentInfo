@@ -34,7 +34,7 @@ func GetAllCompanyInOffer() ([]*Company, error) {
 		var company Company
 		map1 := maps[i]
 		company.Id, _ = strconv.Atoi((map1["id"].(string)))
-		//对岗位名称进行断言
+		//对单位名称进行断言
 		name, ok := map1["name"].(string)
 		if ok {
 			company.Name = name

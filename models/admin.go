@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/astaxie/beego/orm"
@@ -13,10 +14,30 @@ type Admin struct {
 	Id       string `orm:"size(128);pk"`
 	Password string `orm:"size(128)"`
 	Name     string `orm:"size(128)"`
+	Super    string `orm:"size(128)"`
 }
 
 func init() {
 	orm.RegisterModel(new(Admin))
+}
+//查询最后一名admin用户的id
+func GetLastAdminId() int{
+	sql:="SELECT id from admin order by id desc limit 1"
+	var n int
+	var maps []orm.Params
+	fmt.Println(sql)
+	o:=orm.NewOrm()
+	_,err:=o.Raw(sql).Values(&maps)
+	if err!=nil{
+		fmt.Println("查询查询最后一名admin用户的id时出错！err:",err)
+	}
+	for i:=range maps{
+		map1:=maps[i]
+		fmt.Println("aaa",map1["id"])
+		n, _ = strconv.Atoi((map1["id"].(string)))
+	}
+	fmt.Println("n:",n)
+	return n
 }
 
 // AddAdmin insert a new Admin into database and returns
